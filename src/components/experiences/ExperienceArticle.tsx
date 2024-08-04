@@ -1,3 +1,5 @@
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+
 export interface ExperienceArticleProps {
     title: string;
     company: string;
@@ -8,10 +10,18 @@ export interface ExperienceArticleProps {
 
 export default function ExperienceArticle({ title, company, startDate, endDate, description }: ExperienceArticleProps) {
     return (
-        <div>
-            <h4 className={"font-mono mb-1 text-xl"}>{title} at <span className={"text-green-400"}>{company}</span></h4>
-            <h5 className={"mb-3"}>{startDate} - {endDate}</h5>
-            <p>{description}</p>
-        </div>
+        <Card>
+            <CardHeader>
+                <CardTitle>
+                    {title} at <span className={"text-green-500"}>{company}</span>
+                </CardTitle>
+                <CardDescription>{startDate} - {endDate}</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p>
+                    {description}
+                </p>
+            </CardContent>
+        </Card>
     )
 }

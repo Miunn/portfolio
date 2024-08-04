@@ -1,13 +1,12 @@
 "use client"
 
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {Progress} from "@/components/ui/progress";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import ExperienceArticle from "@/components/experiences/ExperienceArticle";
 
 export default function ExperienceTabs() {
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
-    const [progress, setProgress] = useState<number>(0);
-    const requestId = useRef(0);
+    const [progresses, setProgresses] = useState<number[]>([0, 0, 0]);
 
     const experiencesArticles = [
         {
@@ -34,50 +33,61 @@ export default function ExperienceTabs() {
     ];
 
     const updateProgress = () => {
-        setProgress((prev) => {
-            if ((prev + 1) > 100) {
-                console.log("Next step");
-                nextStep();
+        setProgresses(progresses.map((value: number, index: number): number => {
+            if (index === selectedIndex) {
+                return value + 1;
             }
-            return (prev + .1);
-        });
+            return value;
+        }));
+
+        /*setProgresses((prev: number[]) => {
+
+            return prev.map((value: number, index: number): number => {
+                if (index === selectedIndex) {
+                    return value + 1;
+                }
+                return value;
+            });
+        });*/
     }
 
     const nextStep = () => {
-        console.log("Next step from", selectedIndex, "to", (selectedIndex + 1) % experiencesArticles.length);
         setSelectedIndex((selectedIndex + 1) % experiencesArticles.length);
         // Set selected progress to 0
-        setProgress(0);
+        setProgresses([0, 0, 0])
     }
 
     useEffect(() => {
-        const interval = setInterval(updateProgress, 20);
+        const interval = setInterval(updateProgress, 40);
 
-        if (progress > 100) {
+        if (progresses[selectedIndex] > 100) {
             clearInterval(interval);
+            nextStep();
         }
 
         return () => {
             clearInterval(interval);
         }
-    }, [progress]);
+    }, [progresses]);
 
     return (
         <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        {experiencesArticles[selectedIndex].title} at <span className={"text-green-500"}>{experiencesArticles[selectedIndex].company}</span>
-                    </CardTitle>
-                    <CardDescription>{experiencesArticles[selectedIndex].startDate} - {experiencesArticles[selectedIndex].endDate}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p>
-                        {experiencesArticles[selectedIndex].description}
-                    </p>
-                </CardContent>
-            </Card>
-            <Progress value={progress} />
+            <ExperienceArticle {...experiencesArticles[selectedIndex]} />
+            <div className={"flex gap-3 justify-center"}>
+                {progresses.map((progress: number, index: number) => (
+                    (selectedIndex === index)
+                        ? <Progress
+                            key={index}
+                            className={"duration-300 w-32 h-2"}
+                            value={progress}
+                        />
+                        : <Progress
+                            key={index}
+                            className={"duration-300 w-2 h-2"}
+                            value={100}
+                        />
+                ))}
+            </div>
         </div>
     )
 }
