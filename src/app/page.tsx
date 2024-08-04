@@ -2,13 +2,14 @@
 
 import {useState} from "react";
 import SplashScreen from "@/components/SplashScreen";
+import ExperienceTabs from "@/components/experiences/ExperienceTabs";
 
 export default function Home() {
     const [loading, setLoading] = useState<boolean>(true);
 
     return (
-        <main className="flex min-h-screen flex-col p-24">
-            <section>
+        <main className="flex min-h-screen flex-col px-24">
+            <section className={"flex min-h-screen flex-col justify-center"}>
                 <h1 className={"tracking-wide text-2xl"}>Hi, I'm Remi.</h1>
                 <p>
                     I'm a fifth year cyber-security student from France.<br/>
@@ -17,8 +18,10 @@ export default function Home() {
                     systems.
                 </p>
             </section>
-            <section>
+            <section className={"flex min-h-screen flex-col justify-center"}>
                 <h1 className={"tracking-wide text-2xl"}>Experiences</h1>
+
+                <ExperienceTabs />
             </section>
         </main>
     );

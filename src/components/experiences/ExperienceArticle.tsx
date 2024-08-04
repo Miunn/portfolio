@@ -9,8 +9,8 @@ export interface ExperienceArticleProps {
 export default function ExperienceArticle({ title, company, startDate, endDate, description }: ExperienceArticleProps) {
     return (
         <div>
-            <h4>{title} at <span>{company}</span></h4>
-            <h5>{startDate} - {endDate}</h5>
+            <h4 className={"font-mono mb-1 text-xl"}>{title} at <span className={"text-green-400"}>{company}</span></h4>
+            <h5 className={"mb-3"}>{startDate} - {endDate}</h5>
             <p>{description}</p>
         </div>
     )
