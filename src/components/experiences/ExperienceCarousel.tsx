@@ -2,33 +2,38 @@
 
 import {useEffect, useState} from "react";
 import {Progress} from "@/components/ui/progress";
-import ExperienceArticle from "@/components/experiences/ExperienceArticle";
+import ExperienceArticle, {ExperienceArticleProps} from "@/components/experiences/ExperienceArticle";
 
 export default function ExperienceCarousel() {
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [progresses, setProgresses] = useState<number[]>([0, 0, 0]);
 
-    const experiencesArticles = [
+    const experiencesArticles: ExperienceArticleProps[] = [
         {
             title: "Fixed term contract",
             company: "Elico - Regis Martelet",
             startDate: "September 2023",
             endDate: "Janvier 2024",
-            description: "Front-end and back-end rebuild of an existing inventory management web application."
+            description: "Front-end and back-end rebuild of an existing inventory management web application.",
+            innerCirclesImgPaths: ["/images/symfony.svg", "/images/react.svg"],
+            outerCirclesImgPaths: ["/images/php.svg", "/images/twig.svg"],
         },
         {
             title: "Internship",
             company: "Elico - Regis Martelet",
             startDate: "September 2023",
             endDate: "Janvier 2024",
-            description: "Development of CRM web application from scratch to meet company needs."
+            description: "Development of CRM web application from scratch to meet company needs.",
+            innerCirclesImgPaths: ["/images/symfony.svg", "/images/php.svg"],
+            outerCirclesImgPaths: ["/images/twig.svg"],
         },
         {
             title: "Internship",
             company: "Pandrol - BLONDEL Group",
             startDate: "July",
             endDate: "August 2021",
-            description: "Development of a native Android application."
+            description: "Development of a native Android application.",
+            innerCirclesImgPaths: ["/images/android-studio.svg", "/images/java.svg"],
         }
     ];
 
