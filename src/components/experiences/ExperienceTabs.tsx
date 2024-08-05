@@ -52,9 +52,16 @@ export default function ExperienceTabs() {
     }
 
     const nextStep = () => {
-        setSelectedIndex((selectedIndex + 1) % experiencesArticles.length);
-        // Set selected progress to 0
-        setProgresses([0, 0, 0])
+        setSelectedIndex((prev) => {
+            setProgresses(progresses.map((value: number, index: number): number => {
+                if (index === (prev + 1) % experiencesArticles.length) {
+                    return 0;
+                }
+                return value;
+            }));
+
+            return (prev + 1) % experiencesArticles.length;
+        });
     }
 
     useEffect(() => {
@@ -84,7 +91,7 @@ export default function ExperienceTabs() {
                         : <Progress
                             key={index}
                             className={"duration-300 w-2 h-2"}
-                            value={100}
+                            value={progress}
                         />
                 ))}
             </div>
