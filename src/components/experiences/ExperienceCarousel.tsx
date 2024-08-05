@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {Progress} from "@/components/ui/progress";
 import ExperienceArticle from "@/components/experiences/ExperienceArticle";
 
-export default function ExperienceTabs() {
+export default function ExperienceCarousel() {
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [progresses, setProgresses] = useState<number[]>([0, 0, 0]);
 
@@ -80,8 +80,24 @@ export default function ExperienceTabs() {
                         />
                         : <Progress
                             key={index}
-                            className={"duration-300 w-2 h-2"}
+                            className={"duration-300 w-2 h-2 cursor-pointer"}
                             value={progress}
+                            onClick={() => setSelectedIndex((prev) => {
+                                setProgresses(progresses.map((value: number, progressIndex: number): number => {
+                                    if (progressIndex === prev) {
+                                        return 100;
+                                    }
+
+                                    if (progressIndex === index) {
+                                        return 0;
+                                    }
+
+
+                                    return value;
+                                }));
+
+                                return index;
+                            })}
                         />
                 ))}
             </div>

@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import SplashScreen from "@/components/SplashScreen";
-import ExperienceTabs from "@/components/experiences/ExperienceTabs";
+import ExperienceCarousel from "@/components/experiences/ExperienceCarousel";
 
 export default function Home() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -21,7 +21,7 @@ export default function Home() {
             <section className={"flex min-h-screen flex-col justify-center"}>
                 <h1 className={"tracking-wide text-2xl"}>Experiences</h1>
 
-                <ExperienceTabs />
+                <ExperienceCarousel />
             </section>
         </main>
     );
