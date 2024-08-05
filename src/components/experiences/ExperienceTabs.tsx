@@ -39,16 +39,6 @@ export default function ExperienceTabs() {
             }
             return value;
         }));
-
-        /*setProgresses((prev: number[]) => {
-
-            return prev.map((value: number, index: number): number => {
-                if (index === selectedIndex) {
-                    return value + 1;
-                }
-                return value;
-            });
-        });*/
     }
 
     const nextStep = () => {
