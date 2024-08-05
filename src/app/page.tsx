@@ -21,7 +21,9 @@ export default function Home() {
             <section className={"flex min-h-screen flex-col justify-center"}>
                 <h1 className={"tracking-wide text-2xl"}>Experiences</h1>
 
-                <ExperienceCarousel />
+                <div className={"max-w-4xl h-96"}>
+                    <ExperienceCarousel />
+                </div>
             </section>
         </main>
     );

@@ -11,6 +11,21 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        orbit: "orbit calc(var(--duration)*1s) linear infinite",
+      },
+      keyframes: {
+        orbit: {
+          "0%": {
+            transform:
+                "rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg)",
+          },
+          "100%": {
+            transform:
+                "rotate(360deg) translateY(calc(var(--radius) * 1px)) rotate(-360deg)",
+          },
+        },
+      },
       fontFamily: {
         sans: ["var(--font-inter)", ...fontFamily.sans],
         mono: ["var(--font-martian)", ...fontFamily.mono]
@@ -22,6 +37,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
+
 export default config;

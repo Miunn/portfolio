@@ -68,9 +68,9 @@ export default function ExperienceCarousel() {
     }, [progresses]);
 
     return (
-        <div>
+        <div className={"h-full w-full"}>
             <ExperienceArticle {...experiencesArticles[selectedIndex]} />
-            <div className={"flex gap-3 justify-center"}>
+            <div className={"mt-5 flex gap-3 justify-center"}>
                 {progresses.map((progress: number, index: number) => (
                     (selectedIndex === index)
                         ? <Progress

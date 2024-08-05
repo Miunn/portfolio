@@ -8,20 +8,25 @@ export interface ExperienceArticleProps {
     description: string;
 }
 
-export default function ExperienceArticle({ title, company, startDate, endDate, description }: ExperienceArticleProps) {
+export default function ExperienceArticle({title, company, startDate, endDate, description}: ExperienceArticleProps) {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    {title} at <span className={"text-green-500"}>{company}</span>
-                </CardTitle>
-                <CardDescription>{startDate} - {endDate}</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p>
-                    {description}
-                </p>
-            </CardContent>
+        <Card className={"h-full flex gap-6"}>
+            <div className={"p-6 pr-0 self-center"}>
+                Side
+            </div>
+            <div>
+                <CardHeader>
+                    <CardTitle>
+                        {title} at <span className={"text-green-500"}>{company}</span>
+                    </CardTitle>
+                    <CardDescription>{startDate} - {endDate}</CardDescription>
+                </CardHeader>
+                <CardContent className={"flex"}>
+                    <p>
+                        {description}
+                    </p>
+                </CardContent>
+            </div>
         </Card>
     )
 }
