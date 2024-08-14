@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {Progress} from "@/components/ui/progress";
 import ExperienceArticle, {ExperienceArticleProps} from "@/components/experiences/ExperienceArticle";
 
@@ -77,33 +77,34 @@ export default function ExperienceCarousel() {
             <ExperienceArticle {...experiencesArticles[selectedIndex]} />
             <div className={"mt-5 flex gap-3 justify-center"}>
                 {progresses.map((progress: number, index: number) => (
-                    (selectedIndex === index)
-                        ? <Progress
-                            key={index}
-                            className={"duration-300 w-32 h-2"}
-                            value={progress}
-                        />
-                        : <Progress
-                            key={index}
-                            className={"duration-300 w-2 h-2 cursor-pointer"}
-                            value={progress}
-                            onClick={() => setSelectedIndex((prev) => {
-                                setProgresses(progresses.map((value: number, progressIndex: number): number => {
-                                    if (progressIndex === prev) {
-                                        return 100;
-                                    }
+                    <Fragment key={index}>
+                        {(selectedIndex === index)
+                            ? <Progress
+                                className={"duration-300 w-32 h-2"}
+                                value={progress}
+                            />
+                            : <Progress
+                                className={"duration-300 w-2 h-2 cursor-pointer"}
+                                value={progress}
+                                onClick={() => setSelectedIndex((prev) => {
+                                    setProgresses(progresses.map((value: number, progressIndex: number): number => {
+                                        if (progressIndex === prev) {
+                                            return 100;
+                                        }
 
-                                    if (progressIndex === index) {
-                                        return 0;
-                                    }
+                                        if (progressIndex === index) {
+                                            return 0;
+                                        }
 
 
-                                    return value;
-                                }));
+                                        return value;
+                                    }));
 
-                                return index;
-                            })}
-                        />
+                                    return index;
+                                })}
+                            />
+                        }
+                    </Fragment>
                 ))}
             </div>
         </div>

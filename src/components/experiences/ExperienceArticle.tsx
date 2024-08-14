@@ -18,6 +18,7 @@ export default function ExperienceArticle({title, company, startDate, endDate, d
             <div className={"relative flex h-full w-full flex-col items-center justify-center overflow-hidden"}>
                 {innerCirclesImgPaths?.map((path, index) => (
                     <OrbitingCircles
+                        key={index}
                         className="size-[30px] border-none bg-transparent"
                         duration={20}
                         delay={10*index}
@@ -33,6 +34,7 @@ export default function ExperienceArticle({title, company, startDate, endDate, d
                 ))}
                 {outerCirclesImgPaths?.map((path, index) => (
                     <OrbitingCircles
+                        key={index}
                         className="size-[30px] border-none bg-transparent"
                         duration={20}
                         delay={10*index}

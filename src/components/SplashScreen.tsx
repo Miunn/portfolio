@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import anime from 'animejs';
+/*import anime from 'animejs';
 
 export default function SplashScreen({ finishLoading }) {
     useEffect(() => {
@@ -21,3 +21,4 @@ export default function SplashScreen({ finishLoading }) {
         </div>
     );
 };
+*/
