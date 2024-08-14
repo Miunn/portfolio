@@ -29,12 +29,12 @@ export const TracingBeamFull = ({
     <motion.div
       className={cn("relative w-full mx-auto h-full", className)}
     >
-      <div className="absolute -left-4 md:-left-20">
+      <div className="absolute">
         <svg
           viewBox={`0 0 20 ${svgHeight}`}
           width="20"
           height={svgHeight} // Set the SVG height
-          className=" ml-4 block"
+          className="block"
           aria-hidden="true"
           strokeLinecap={"round"}
           strokeLinejoin={"round"}

@@ -2,16 +2,16 @@ import IconCloud, {Icon} from "@/components/magicui/icon-cloud";
 
 export default function SkillsList() {
     return (
-        <div className={"flex gap-16"}>
+        <div className={"flex gap-16 flex-col items-center md:flex-row"}>
             <div
                 className={"flex h-full w-full max-w-[24rem] items-center justify-center overflow-hidden bg-background"}>
                 <IconCloud icons={skills}/>
             </div>
 
-            <ul className="flex-grow grid grid-cols-2 gap-10">
+            <ul className="flex-grow grid grid-cols-2 gap-10 md:grid-cols-2 sm:grid-cols-3">
                 <li>
                     <h2 className="text-xl">Coding</h2>
-                    <ul className={"md:grid md:grid-cols-2"}>
+                    <ul className={"lg:grid lg:grid-cols-2"}>
                         <li>
                             <h3>C</h3>
                         </li>
@@ -37,7 +37,7 @@ export default function SkillsList() {
                 </li>
                 <li>
                     <h2 className="text-xl">Cyber-security</h2>
-                    <ul className={"md:grid md:grid-cols-2"}>
+                    <ul className={"lg:grid lg:grid-cols-2"}>
                         <li>
                             <h3>Burp Suite</h3>
                         </li>
@@ -63,7 +63,7 @@ export default function SkillsList() {
                 </li>
                 <li>
                     <h2 className={"text-xl"}>Databases</h2>
-                    <ul className={"md:grid md:grid-cols-2"}>
+                    <ul className={"lg:grid lg:grid-cols-2"}>
                         <li>
                             <h3>DynamoDB</h3>
                         </li>
