@@ -197,7 +197,7 @@ const skills: Icon[] = [
         name: "Nmap",
         icon: "/images/nmap.svg",
         width: 42,
-        height: 42,
+        height: 38,
     },
     {
         name: "PHP",
