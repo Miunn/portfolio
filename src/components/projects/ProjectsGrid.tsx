@@ -100,7 +100,7 @@ const projects = [
     {
         title: "Cod'INSA",
         description: "Cod'INSA is an algorithmic contest between INSA schools. " +
-            "The goal during qualifications is to individually solve several algorithmic problems in a limited time and the top 5 qualify for the final. " +
+            "The goal during qualifications is to individually solve several algorithmic problems in a limited time and the top 5 qualifies for the final. " +
             "During the final, in group of 5, the goal is to build a bot within 20 hours on a game specially designed for the final. Each bot of each school fights against each other to determine the winner. <br/>" +
             "3 times finalist.",
         icon: "/images/codinsa.png",
