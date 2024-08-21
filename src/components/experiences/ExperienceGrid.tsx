@@ -25,7 +25,7 @@ export default function ExperienceGrid() {
                     <CardTitle>
                         Internship at <span className={"text-green-500"}>Elico - Regis Martelet</span>
                     </CardTitle>
-                    <CardDescription>September 2023 - Janvier 2024</CardDescription>
+                    <CardDescription>September 2023 - January 2024</CardDescription>
                 </CardHeader>
                 <CardContent className={"flex-grow flex"}>
                     <p>
