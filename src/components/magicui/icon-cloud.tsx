@@ -72,7 +72,7 @@ export const renderCustomImage = (icon: Icon, isPng: boolean, theme: string) => 
 
     const a = {
         key: guid(),
-        title: "icon.name",
+        title: icon.name,
         style: {cursor: 'pointer'},
     }
 

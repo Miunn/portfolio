@@ -3,8 +3,8 @@ import AvatarCircles from "@/components/magicui/avatar-circles";
 
 export default function ExperienceGrid() {
     return (
-        <div className={"grid grid-cols-1 lg:grid-cols-2 gap-10"}>
-            <Card className={"flex flex-col"}>
+        <div className={"grid grid-cols-1 lg:grid-cols-2 gap-10 z-10"}>
+            <Card className={"flex flex-col bg-background z-20"}>
                 <CardHeader>
                     <CardTitle>
                         Fixed term contract at <span className={"text-green-500"}>Elico - Regis Martelet</span>
@@ -20,7 +20,7 @@ export default function ExperienceGrid() {
                     <AvatarCircles avatarUrls={["images/php.svg", "/images/symfony-light.png", "/images/twig.svg", "/images/react.svg"]} />
                 </CardFooter>
             </Card>
-            <Card className={"flex flex-col"}>
+            <Card className={"flex flex-col bg-background z-20"}>
                 <CardHeader>
                     <CardTitle>
                         Internship at <span className={"text-green-500"}>Elico - Regis Martelet</span>
@@ -36,7 +36,7 @@ export default function ExperienceGrid() {
                     <AvatarCircles avatarUrls={["images/php.svg", "/images/symfony-light.png", "/images/twig.svg"]} />
                 </CardFooter>
             </Card>
-            <Card className={"flex flex-col"}>
+            <Card className={"flex flex-col bg-background z-20"}>
                 <CardHeader>
                     <CardTitle>
                         Internship at <span className={"text-green-500"}>Pandrol - BLONDEL Group</span>
