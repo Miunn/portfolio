@@ -3,7 +3,6 @@ import ExperienceGrid from "@/components/experiences/ExperienceGrid";
 import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import EducationTracing from "@/components/education/EducationTracing";
 import SkillsList from "@/skills/SkillsList";
-import Head from "next/head";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,10 +12,6 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <>
-            <Head>
-                <title>Rémi Caulier</title>
-                <meta property="og:title" content="Rémi Cauli" key="title" />
-            </Head>
             <Particles
                 className="absolute inset-0"
                 quantity={500}
@@ -44,7 +39,6 @@ export default function Home() {
                         refresh
                     />
                     <section className={"max-w-6xl mx-auto mb-16"}>
-
                         <h1 className={"tracking-wide text-2xl mb-8"}>Experiences</h1>
 
                         <ExperienceGrid />

@@ -71,7 +71,6 @@ export const renderCustomImage = (icon: Icon, isPng: boolean, theme: string) => 
     const imgSrc = icon.icon;
 
     const a = {
-        key: guid(),
         title: icon.name,
         style: {cursor: 'pointer'},
     }
@@ -84,7 +83,7 @@ export const renderCustomImage = (icon: Icon, isPng: boolean, theme: string) => 
     }
 
     return (
-        <a {...a}>
+        <a key={guid()} {...a}>
             <img {...i} />
         </a>
     )
