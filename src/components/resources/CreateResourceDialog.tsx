@@ -55,8 +55,8 @@ export default function CreateResourceDialog() {
 
     return (
         <Dialog>
-            <DialogTrigger>
-                Register a new resource
+            <DialogTrigger asChild>
+                <Button className="z-10">Register a new resource</Button>
             </DialogTrigger>
             <DialogOverlay>
                 <DialogContent>

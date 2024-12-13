@@ -17,13 +17,13 @@ export default function SearchResourcesLayout() {
 
     return (
         <>
+        <div className="mb-20">
             <PlaceholdersAndVanishInput
                 placeholders={searchPlaceholders}
                 onChange={(changeEvent) => setSearchInput(changeEvent.currentTarget.value)}
                 onSubmit={() => { }}
             />
-
-            <CreateResourceDialog />
+            </div>
 
             <div className="mb-11">
                 <ExpandableCardDemo />
