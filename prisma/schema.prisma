@@ -13,6 +13,7 @@ model Resource {
   description String? @db.VarChar(100)
   text String? @db.Text
   url String? @db.VarChar(255)
+  createdAt DateTime @default(now())
   tags Tag[]
 }
 

@@ -10,8 +10,14 @@ import { z } from "zod";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "../ui/scroll-area";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react"
+import { MultiSelect } from "../ui/multi-autocomplete";
+import { getTags } from "@/actions/resources";
 
 export default function CreateResourceDialog() {
+    const [creating, setCreating] = useState<boolean>(false);
+    const [tags, setTags] = useState<{ value: string, label: string }[]>([]);
 
     const create_resource_schema = useForm<z.infer<typeof CREATE_RESOURCE_FORM_SCHEMA>>({
         resolver: zodResolver(CREATE_RESOURCE_FORM_SCHEMA),
@@ -24,8 +30,28 @@ export default function CreateResourceDialog() {
     })
 
     function onSubmit(values: z.infer<typeof CREATE_RESOURCE_FORM_SCHEMA>) {
+        setCreating(true);
+
         console.log(values);
+
+        setTimeout(() => setCreating(false), 5000);
     }
+
+    async function fetchTags() {
+        const tags = await getTags();
+
+        //setOptions(tags.map((tag) => ({ value: tag.id.toString(), label: tag.name as string } as MultiSelectOption)));
+        setTags([
+            { value: "1", label: "Framework" },
+            { value: "2", label: "Exploit" },
+            { value: "3", label: "CVE" },
+            { value: "4", label: "Microsoft" }
+        ])
+    }
+
+    useEffect(() => {
+        fetchTags();
+    }, [])
 
     return (
         <Dialog>
@@ -106,13 +132,34 @@ export default function CreateResourceDialog() {
                                             </FormItem>
                                         )}
                                     />
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="tags"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Tags</FormLabel>
+                                                <FormControl>
+                                                    <MultiSelect
+                                                        items={tags}
+                                                        {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Resource's tags
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
                             </ScrollArea>
                             <DialogFooter>
                                 <DialogClose>
                                     <Button type="button">Close</Button>
                                 </DialogClose>
-                                <Button type="submit">Submit</Button>
+                                {creating
+                                    ? <Button type="submit" className="flex gap-4" disabled><Loader2 className="animate-spin" /> Submit</Button>
+                                    : <Button type="submit">Submit</Button>
+                                }
                             </DialogFooter>
                         </form>
                     </Form>

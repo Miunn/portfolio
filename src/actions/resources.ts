@@ -23,3 +23,27 @@ export async function createResource(title: string, description: string, text: s
 
     revalidatePath("/resources");
 }
+
+export async function getResources() {
+
+    const resources = await prisma.resource.findMany({
+        orderBy: [
+            {
+                createdAt: "desc"
+            }
+        ],
+        take: 20,
+        include: {
+            tags: true
+        }
+    })
+
+    return resources;
+}
+
+export async function getTags() {
+
+    const tags = await prisma.tag.findMany();
+
+    return tags;
+}
