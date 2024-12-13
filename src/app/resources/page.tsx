@@ -1,6 +1,4 @@
-import ExpandableCardDemo from "@/components/ResourcesExpandableLayout";
-import CreateResourceDialog from "@/components/resources/CreateResourceDialog";
-import ResourceCard from "@/components/resources/ResourceCard";
+import SearchResourcesLayout from "@/components/resources/SearchResourcesLayout";
 import GridPattern from "@/components/ui/grid-pattern";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
@@ -23,11 +21,7 @@ export default function Resources() {
                 )}
             />
 
-            <CreateResourceDialog />
-
-            <div className="mb-11">
-                <ExpandableCardDemo />
-            </div>
+            <SearchResourcesLayout />
         </div>
     )
 }
