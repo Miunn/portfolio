@@ -19,7 +19,7 @@ export default function Home() {
                 color={"#ffffff"}
                 refresh
             />
-            <main className="relative w-full overflow-hidden flex min-h-screen flex-col items-center mx-auto px-10">
+            <main className="max-w-6xl relative w-full overflow-hidden flex min-h-screen flex-col items-center mx-auto px-10">
                 <section className={"relative w-full max-w-6xl flex min-h-screen flex-col justify-center"}>
                     <h1 className={"tracking-wide text-2xl"}>Hi, I'm Remi.</h1>
                     <p>
