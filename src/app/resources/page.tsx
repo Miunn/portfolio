@@ -14,7 +14,7 @@ export default async function Resources() {
     const resources = await getResources();
 
     return (
-        <div className="relative w-full max-w-6xl mx-auto overflow-x-hidden">
+        <div className="relative w-full max-w-6xl mx-auto overflow-x-hidden mb-52">
             <div className="mt-52 mb-32 flex justify-between items-start">
                 <div>
                     <h1 className="tracking-wide text-2xl">Resources</h1>

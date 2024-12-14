@@ -67,7 +67,7 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                 />
             </div>
 
-            <div className="mb-11">
+            <div>
                 <AnimatePresence>
                     {active && typeof active === "object" && (
                         <motion.div
