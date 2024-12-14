@@ -35,7 +35,7 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
 
     function handleSearchChange(value: string) {
         setSearchInput(value);
-        setDisplayedResources(resources.filter((r) => r.title.includes(value)))
+        setDisplayedResources(resources.filter((r) => r.title.toLowerCase().includes(value.toLowerCase())))
     }
 
     useEffect(() => {
