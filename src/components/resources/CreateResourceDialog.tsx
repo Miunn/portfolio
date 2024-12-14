@@ -13,11 +13,14 @@ import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react"
 import { MultiSelect } from "../ui/multi-autocomplete";
-import { getTags } from "@/actions/resources";
+import { createResource, getTags } from "@/actions/resources";
+import { toast } from "@/hooks/use-toast";
 
 export default function CreateResourceDialog() {
     const [creating, setCreating] = useState<boolean>(false);
     const [tags, setTags] = useState<{ value: string, label: string }[]>([]);
+    const [selectedTags, setSelectedTags] = useState<{ value: string, label: string }[]>([]);
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     const create_resource_schema = useForm<z.infer<typeof CREATE_RESOURCE_FORM_SCHEMA>>({
         resolver: zodResolver(CREATE_RESOURCE_FORM_SCHEMA),
@@ -34,7 +37,20 @@ export default function CreateResourceDialog() {
 
         console.log(values);
 
-        setTimeout(() => setCreating(false), 5000);
+        createResource(values.title, values.description, values.text, values.url, selectedTags.map((tag) => ({name: tag.value})))
+        .then((r) => {
+            if (r.status !== "ok") {
+                toast({
+                    title: "Failed to create resource",
+                    description: "Unknown error happened when trying to create the resource"
+                });
+                return;
+            }
+            toast({
+                title: "Resource created",
+                description: "Resource has been successfully created"
+            })
+        });
     }
 
     async function fetchTags() {
@@ -54,7 +70,7 @@ export default function CreateResourceDialog() {
     }, [])
 
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <Button className="z-10">Register a new resource</Button>
             </DialogTrigger>
@@ -141,6 +157,8 @@ export default function CreateResourceDialog() {
                                                 <FormControl>
                                                     <MultiSelect
                                                         items={tags}
+                                                        selectedItems={selectedTags}
+                                                        setSelectedItems={setSelectedTags}
                                                         {...field} />
                                                 </FormControl>
                                                 <FormDescription>
@@ -157,7 +175,7 @@ export default function CreateResourceDialog() {
                                     <Button type="button">Close</Button>
                                 </DialogClose>
                                 {creating
-                                    ? <Button type="submit" className="flex gap-4" disabled><Loader2 className="animate-spin" /> Submit</Button>
+                                    ? <Button type="submit" className="flex gap-4 items-center" disabled><Loader2 className="animate-spin" /> Submit</Button>
                                     : <Button type="submit">Submit</Button>
                                 }
                             </DialogFooter>

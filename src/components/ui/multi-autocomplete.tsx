@@ -21,16 +21,17 @@ type Item = {
 
 export interface MultiSelectProps {
   items: Item[];
+  selectedItems: Item[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<Item[]>>;
 }
 
-export function MultiSelect({ items }: MultiSelectProps) {
+export function MultiSelect({ items, selectedItems, setSelectedItems }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Item[]>([]);
   const [inputValue, setInputValue] = React.useState("");
 
   const handleUnselect = React.useCallback((item: Item) => {
-    setSelected((prev) => prev.filter((s) => s.value !== item.value));
+    setSelectedItems((prev) => prev.filter((s) => s.value !== item.value));
   }, []);
 
   const handleKeyDown = React.useCallback(
@@ -39,7 +40,7 @@ export function MultiSelect({ items }: MultiSelectProps) {
       if (input) {
         if (e.key === "Delete" || e.key === "Backspace") {
           if (input.value === "") {
-            setSelected((prev) => {
+            setSelectedItems((prev) => {
               const newSelected = [...prev];
               newSelected.pop();
               return newSelected;
@@ -56,10 +57,8 @@ export function MultiSelect({ items }: MultiSelectProps) {
   );
 
   const selectables = items.filter(
-    (item) => !selected.includes(item),
+    (item) => !selectedItems.includes(item),
   );
-
-  console.log(selectables, selected, inputValue);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -69,7 +68,7 @@ export function MultiSelect({ items }: MultiSelectProps) {
       >
         <div className="group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring">
           <div className="flex flex-wrap gap-1">
-            {selected.map((item) => {
+            {selectedItems.map((item) => {
               return (
                 <Badge key={item.value} variant="secondary">
                   {item.label}
@@ -125,7 +124,7 @@ export function MultiSelect({ items }: MultiSelectProps) {
             <CommandList>
               <div className="absolute top-3 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                 <CommandGroup className="h-full overflow-auto">
-                  <CommandItem
+                  {inputValue !== "" ? <CommandItem
                     key={`create-custom`}
                     onMouseDown={(e) => {
                       e.preventDefault();
@@ -133,13 +132,14 @@ export function MultiSelect({ items }: MultiSelectProps) {
                     }}
                     onSelect={(value) => {
                       const createValue = inputValue;
-                      setSelected((prev) => [...prev, { value: createValue.toLowerCase().replace(' ', '-'), label: createValue } as unknown as Item]);
+                      setSelectedItems((prev) => [...prev, { value: createValue.toLowerCase().replace(' ', '-'), label: createValue } as unknown as Item]);
                       setInputValue("");
                     }}
                     className={"cursor-pointer"}
                   >
                     Create "{inputValue}"
                   </CommandItem>
+                  : null}
                   {selectables.map((item) => {
                     return (
                       <CommandItem
@@ -150,7 +150,7 @@ export function MultiSelect({ items }: MultiSelectProps) {
                         }}
                         onSelect={(value) => {
                           setInputValue("");
-                          setSelected((prev) => [...prev, item]);
+                          setSelectedItems((prev) => [...prev, item]);
                         }}
                         className={"cursor-pointer"}
                       >

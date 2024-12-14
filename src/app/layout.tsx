@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter(
   {
@@ -48,6 +49,8 @@ export default function RootLayout({
           </nav>
         </header>
         {children}
+
+        <Toaster />
       </body>
     </html>
   );

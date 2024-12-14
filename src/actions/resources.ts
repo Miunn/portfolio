@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
-export async function createResource(title: string, description: string, text: string, url: string, tags: string[]) {
+export async function createResource(title: string, description: string, text: string, url: string, tags: { name: string }[]) {
 
     const resource = await prisma.resource.create({
         data: {
@@ -12,9 +12,7 @@ export async function createResource(title: string, description: string, text: s
             text: text,
             url: url,
             tags: {
-                create: tags.map((tag) => (
-                    { name: tag }
-                ))
+                create: tags
             }
         }
     });
@@ -22,6 +20,8 @@ export async function createResource(title: string, description: string, text: s
     console.log(resource);
 
     revalidatePath("/resources");
+
+    return { status: "ok" };
 }
 
 export async function getResources() {
@@ -34,9 +34,13 @@ export async function getResources() {
         ],
         take: 20,
         include: {
-            tags: true
+            tags: {
+                select: {
+                    name: true
+                }
+            }
         }
-    })
+    });
 
     return resources;
 }
