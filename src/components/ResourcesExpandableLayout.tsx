@@ -25,12 +25,18 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
     ]
 
     const [searchInput, setSearchInput] = useState<string>("");
+    const [displayedResources, setDisplayedResources] = useState<ResourceCardType[]>(resources);
 
     const [active, setActive] = useState<(ResourceCardType) | boolean | null>(
         null
     );
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
+
+    function handleSearchChange(value: string) {
+        setSearchInput(value);
+        setDisplayedResources(resources.filter((r) => r.title.includes(value)))
+    }
 
     useEffect(() => {
         function onKeyDown(event: KeyboardEvent) {
@@ -56,7 +62,7 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
             <div className="mb-20">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
-                    onChange={(changeEvent) => setSearchInput(changeEvent.currentTarget.value)}
+                    onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
                     onSubmit={() => { }}
                 />
             </div>
@@ -146,8 +152,8 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                     ) : null}
                 </AnimatePresence>
                 <div className="max-w-6xl w-full grid grid-cols-4">
-                    {resources.length > 0
-                        ? resources.map((card, index) => (
+                    {displayedResources.length > 0
+                        ? displayedResources.map((card, index) => (
                             <motion.div
                                 layoutId={`card-${card.title}-${id}`}
                                 key={`card-${card.title}-${id}`}
