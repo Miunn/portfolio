@@ -7,6 +7,9 @@ import { ScrollArea } from "./ui/scroll-area";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Tooltip } from "./ui/tooltip";
+import { TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import Link from "next/link";
 
 export type ResourceCardType = {
     title: string;
@@ -119,7 +122,14 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                                     <CardContent>
                                         <motion.div layoutId={`tags-${active.title}-${active.description}-${id}`} className="mb-6 flex flex-wrap gap-2">
                                             {active.tags?.map((tag) => (
-                                                <Badge key={tag.name}>{tag.name}</Badge>
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger><Badge key={tag.name}>{tag.name}</Badge></TooltipTrigger>
+                                                        <TooltipContent>
+                                                            {tag.name}
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
                                             ))}
                                         </motion.div>
                                         <motion.p layoutId={`text-${active.text}-${id}`}>
@@ -142,8 +152,10 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                                         </ScrollArea>
                                     </CardContent>
                                     <CardFooter className="flex justify-end">
-                                        <motion.div layoutId={`button-${active.title}-${id}`}>
-                                            <Button className="rounded-3xl" type={"button"}>See more</Button>
+                                        <motion.div layoutId={`button-${active.title}-${id}`} >
+                                            <Link href={active.url} target="_blank" onClick={() => { }}>
+                                                <Button className="rounded-3xl" type={"button"}>See more</Button>
+                                            </Link>
                                         </motion.div>
                                     </CardFooter>
                                 </Card>
@@ -151,14 +163,14 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                         </div>
                     ) : null}
                 </AnimatePresence>
-                <div className="max-w-6xl w-full grid grid-cols-4">
+                <div className="max-w-6xl w-full grid sm:grid-cols-4 grid-cols-3">
                     {displayedResources.length > 0
                         ? displayedResources.map((card, index) => (
                             <motion.div
                                 layoutId={`card-${card.title}-${id}`}
                                 key={`card-${card.title}-${id}`}
                                 onClick={() => setActive(card)}
-                                className="bg-background w-72 h-80 flex flex-col z-10 p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer"
+                                className="bg-background h-80 flex flex-col z-10 p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer"
                             >
                                 <Card className="bg-background w-full h-80 flex flex-col">
                                     <CardHeader>
@@ -178,12 +190,27 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
 
                                     <CardFooter className="flex justify-between">
                                         <motion.div layoutId={`tags-${card.title}-${card.description}-${id}`} className="flex flex-wrap gap-2">
-                                            {card.tags?.map((tag) => (
+                                            {card.tags?.slice(0, 2).map((tag) => (
                                                 <Badge key={tag.name}>{tag.name}</Badge>
                                             ))}
+                                            {(card.tags?.length ?? 0) - 2 > 0
+                                                ? <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger>
+                                                            <Badge>+ {card.tags!.length - 2}</Badge>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>{card.tags!.slice(2).map((tag) => tag.name).join(', ')}</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                                : null
+                                            }
                                         </motion.div>
                                         <motion.div layoutId={`button-${card.title}-${id}`}>
-                                            <Button className="rounded-3xl" type={"button"}>See more</Button>
+                                            <Link href={card.url} target="_blank">
+                                                <Button className="rounded-3xl" type={"button"}>See more</Button>
+                                            </Link>
                                         </motion.div>
                                     </CardFooter>
                                 </Card>
