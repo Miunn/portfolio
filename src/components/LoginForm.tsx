@@ -3,13 +3,19 @@
 import { LOGIN_FORM_SCHEMA } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
 import { FormField, FormItem, FormLabel, FormControl, Form, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { set } from "date-fns";
 
 export default function LoginForm() {
+    const [loading, setLoading] = useState<boolean>(false);
+
     const loginForm = useForm<z.infer<typeof LOGIN_FORM_SCHEMA>>({
         resolver: zodResolver(LOGIN_FORM_SCHEMA),
         defaultValues: {
@@ -18,8 +24,32 @@ export default function LoginForm() {
         }
     });
 
-    function onSubmit(values: z.infer<typeof LOGIN_FORM_SCHEMA>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof LOGIN_FORM_SCHEMA>) {
+        setLoading(true);
+
+        const r = await fetch("/api/login", {
+            method: "POST",
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password
+            })
+        });
+        setLoading(false);
+
+        console.log(r);
+
+        if (r.ok) {
+            toast({
+                title: "Logged in",
+                description: "User successfully logged in"
+            })
+        } else {
+            toast({
+                title: "Failed to login",
+                description: "Email or password incorrect",
+                variant: "destructive"
+            })
+        }
     }
 
     return (
@@ -58,7 +88,10 @@ export default function LoginForm() {
                             )}
                         />
 
-                        <Button type="submit" className="w-fit self-end">Login</Button>
+                        {loading
+                            ? <Button type="submit" className="w-fit self-end" disabled><Loader2 className="animate-spin mr-1" /> Login</Button>
+                            : <Button type="submit" className="w-fit self-end">Login</Button>
+                        }
                     </form>
                 </Form>
             </CardContent>

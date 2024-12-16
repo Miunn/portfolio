@@ -1,6 +1,7 @@
 import { createSecretKey } from "crypto";
 import {SignJWT} from 'jose';
-import { headers } from "next/headers";
+import * as bcrypt from 'bcrypt';
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
     let res;
@@ -18,6 +19,26 @@ export async function POST(request: Request) {
     if (!email || !password) {
         return new Response("Bad request", {
             status: 400
+        })
+    }
+
+    const user = await prisma.user.findFirst({
+        where: {
+            email: email
+        }
+    });
+    
+    if (!user) {
+        return new Response("Forbidden", {
+            status: 403
+        })
+    }
+
+    const comparison = await bcrypt.compare(password, user.password);
+
+    if (!comparison) {
+        return new Response("Forbidden", {
+            status: 403
         })
     }
 
