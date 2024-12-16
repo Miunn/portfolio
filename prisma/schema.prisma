@@ -19,6 +19,7 @@ model Resource {
 
 model Tag {
   id Int @id @default(autoincrement())
-  name String? @db.VarChar(100)
+  value String? @db.VarChar(100)
+  label String? @db.VarChar(100)
   resources Resource[]
 }

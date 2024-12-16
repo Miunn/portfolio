@@ -12,14 +12,14 @@ import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react"
-import { MultiSelect } from "../ui/multi-autocomplete";
+import { Item, MultiSelect } from "../ui/multi-autocomplete";
 import { createResource, getTags } from "@/actions/resources";
 import { toast } from "@/hooks/use-toast";
+import { ResourceCardTag } from "../ResourcesExpandableLayout";
 
-export default function CreateResourceDialog() {
+export default function CreateResourceDialog({ tags }: { tags: ResourceCardTag[] }) {
     const [creating, setCreating] = useState<boolean>(false);
-    const [tags, setTags] = useState<{ value: string, label: string }[]>([]);
-    const [selectedTags, setSelectedTags] = useState<{ value: string, label: string }[]>([]);
+    const [selectedTags, setSelectedTags] = useState<ResourceCardTag[]>([]);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     const create_resource_schema = useForm<z.infer<typeof CREATE_RESOURCE_FORM_SCHEMA>>({
@@ -35,9 +35,7 @@ export default function CreateResourceDialog() {
     function onSubmit(values: z.infer<typeof CREATE_RESOURCE_FORM_SCHEMA>) {
         setCreating(true);
 
-        console.log(values);
-
-        createResource(values.title, values.description, values.text, values.url, selectedTags.map((tag) => ({name: tag.value})))
+        createResource(values.title, values.description, values.text, values.url, selectedTags)
         .then((r) => {
             if (r.status !== "ok") {
                 toast({
@@ -50,24 +48,10 @@ export default function CreateResourceDialog() {
                 title: "Resource created",
                 description: "Resource has been successfully created"
             })
+            setCreating(false);
+            setDialogOpen(false);
         });
     }
-
-    async function fetchTags() {
-        const tags = await getTags();
-
-        //setOptions(tags.map((tag) => ({ value: tag.id.toString(), label: tag.name as string } as MultiSelectOption)));
-        setTags([
-            { value: "1", label: "Framework" },
-            { value: "2", label: "Exploit" },
-            { value: "3", label: "CVE" },
-            { value: "4", label: "Microsoft" }
-        ])
-    }
-
-    useEffect(() => {
-        fetchTags();
-    }, [])
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -156,7 +140,7 @@ export default function CreateResourceDialog() {
                                                 <FormLabel>Tags</FormLabel>
                                                 <FormControl>
                                                     <MultiSelect
-                                                        items={tags}
+                                                        items={tags.length > 0 ? tags as unknown as Item[] : []}
                                                         selectedItems={selectedTags}
                                                         setSelectedItems={setSelectedTags}
                                                         {...field} />
@@ -171,7 +155,7 @@ export default function CreateResourceDialog() {
                                 </div>
                             </ScrollArea>
                             <DialogFooter>
-                                <DialogClose>
+                                <DialogClose asChild>
                                     <Button type="button">Close</Button>
                                 </DialogClose>
                                 {creating

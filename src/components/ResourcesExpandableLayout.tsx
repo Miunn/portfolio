@@ -10,6 +10,9 @@ import { Button } from "./ui/button";
 import { Tooltip } from "./ui/tooltip";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import Link from "next/link";
+import FilterResources from "./resources/FilterResources";
+import { RangeDatePicker } from "./RangeDatePicker";
+import { DateRange } from "react-day-picker";
 
 export type ResourceCardType = {
     title: string;
@@ -17,10 +20,15 @@ export type ResourceCardType = {
     text: string;
     content: () => ReactNode;
     url: string;
-    tags?: { name: string }[];
+    tags?: ResourceCardTag[];
 }
 
-export default function ResourcesExpandableLayout({ resources }: { resources: ResourceCardType[] }) {
+export type ResourceCardTag = {
+    value: string,
+    label: string
+}
+
+export default function ResourcesExpandableLayout({ resources, tags }: { resources: ResourceCardType[], tags?: ResourceCardTag[] }) {
     const searchPlaceholders = [
         "CVE-20240781",
         "Microsoft",
@@ -28,11 +36,11 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
     ]
 
     const [searchInput, setSearchInput] = useState<string>("");
+    const [searchFilters, setSearchFilters] = useState<ResourceCardTag[]>([]);
+    const [dateRangeFilter, setDateRangeFilter] = useState<DateRange | undefined>(undefined);
     const [displayedResources, setDisplayedResources] = useState<ResourceCardType[]>(resources);
 
-    const [active, setActive] = useState<(ResourceCardType) | boolean | null>(
-        null
-    );
+    const [active, setActive] = useState<(ResourceCardType) | boolean | null>(null);
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
@@ -62,12 +70,30 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
 
     return (
         <>
-            <div className="mb-20">
+            <div className="mb-20 mx-auto max-w-xl space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
                     onSubmit={() => { }}
                 />
+                <div className="flex gap-4">
+                <FilterResources
+                    filters={tags ? tags : []}
+                    selectedFilters={searchFilters}
+                    onSelectedFiltersChange={(value) => {
+                        if (searchFilters.includes(value)) {
+                            setSearchFilters(searchFilters.filter((filter) => filter !== value))
+                        } else {
+                            setSearchFilters([...searchFilters, value])
+                        }
+                    }}
+                    emptyLabel={"No tags"}
+                />
+                <RangeDatePicker
+                    date={dateRangeFilter}
+                    onDateChange={setDateRangeFilter}
+                />
+                </div>
             </div>
 
             <div>
@@ -124,9 +150,9 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                                             {active.tags?.map((tag) => (
                                                 <TooltipProvider>
                                                     <Tooltip>
-                                                        <TooltipTrigger><Badge key={tag.name}>{tag.name}</Badge></TooltipTrigger>
+                                                        <TooltipTrigger><Badge key={tag.value}>{tag.label}</Badge></TooltipTrigger>
                                                         <TooltipContent>
-                                                            {tag.name}
+                                                            {tag.value}
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -191,7 +217,7 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                                     <CardFooter className="flex justify-between">
                                         <motion.div layoutId={`tags-${card.title}-${card.description}-${id}`} className="flex flex-wrap gap-2">
                                             {card.tags?.slice(0, 2).map((tag) => (
-                                                <Badge key={tag.name}>{tag.name}</Badge>
+                                                <Badge key={tag.value}>{tag.label}</Badge>
                                             ))}
                                             {(card.tags?.length ?? 0) - 2 > 0
                                                 ? <TooltipProvider>
@@ -200,7 +226,7 @@ export default function ResourcesExpandableLayout({ resources }: { resources: Re
                                                             <Badge>+ {card.tags!.length - 2}</Badge>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>{card.tags!.slice(2).map((tag) => tag.name).join(', ')}</p>
+                                                            <p>{card.tags!.slice(2).map((tag) => tag.label).join(', ')}</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>

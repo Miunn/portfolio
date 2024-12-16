@@ -14,7 +14,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Popover, PopoverAnchor } from "./popover";
 import { PopoverContent } from "@radix-ui/react-popover";
 
-type Item = {
+export type Item = {
   value: string;
   label: string;
 }

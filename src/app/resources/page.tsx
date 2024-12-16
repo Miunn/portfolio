@@ -1,4 +1,4 @@
-import { getResources } from "@/actions/resources";
+import { getResources, getTags } from "@/actions/resources";
 import CreateResourceDialog from "@/components/resources/CreateResourceDialog";
 import ResourcesExpandableLayout, { ResourceCardType } from "@/components/ResourcesExpandableLayout";
 import GridPattern from "@/components/ui/grid-pattern";
@@ -13,15 +13,18 @@ export const metadata: Metadata = {
 export default async function Resources() {
 
     const resources = await getResources();
+    const tags = (await getTags()).map((tag) => ({ value: tag.value!, label: tag.label! }));
 
     return (
         <div className="relative w-full max-w-6xl mx-auto overflow-hidden mb-52">
             <div className="mt-52 mb-32 flex justify-between items-start">
                 <div>
-                    <h1 className="tracking-wide text-2xl"><NumberTicker value={resources.length} /> Resource{resources.length == 1 ? "" : "s"}</h1>
+                    <h1 className="tracking-wide text-2xl">
+                        {resources.length > 0 ? <NumberTicker value={0} /> : 0} Resource{resources.length == 1 ? "" : "s"}
+                    </h1>
                     <p>Latest news about cybersecurity</p>
                 </div>
-                <CreateResourceDialog />
+                <CreateResourceDialog tags={tags} />
             </div>
             <GridPattern
                 className={cn(
@@ -30,7 +33,7 @@ export default async function Resources() {
                 )}
             />
 
-            <ResourcesExpandableLayout resources={resources as unknown as ResourceCardType[]} />
+            <ResourcesExpandableLayout resources={resources as unknown as ResourceCardType[]} tags={tags} />
         </div>
     )
 }
