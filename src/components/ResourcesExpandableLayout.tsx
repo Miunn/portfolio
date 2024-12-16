@@ -77,7 +77,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
                     onSubmit={() => { }}
                 />
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                 <FilterResources
                     filters={tags ? tags : []}
                     selectedFilters={searchFilters}
