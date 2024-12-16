@@ -1,5 +1,20 @@
 import { z } from "zod"
 
+export const LOGIN_FORM_SCHEMA = z.object({
+    email: z.string({
+        message: "Email is required"
+    }).min(1, {
+        message: "Login is required"
+    }).email({
+        message: "Email format is invalid"
+    }),
+    password: z.string({
+        message: "Password is required"
+    }).min(1, {
+        message: "Password is required"
+    })
+})
+
 export const CREATE_RESOURCE_FORM_SCHEMA = z.object({
     title: z.string().min(2, {
         message: "Title must be at least 2 characters long"
