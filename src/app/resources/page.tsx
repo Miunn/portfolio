@@ -20,7 +20,7 @@ export default async function Resources() {
             <div className="mt-52 mb-32 flex justify-between items-start">
                 <div>
                     <h1 className="tracking-wide text-2xl">
-                        {resources.length > 0 ? <NumberTicker value={0} /> : 0} Resource{resources.length == 1 ? "" : "s"}
+                        {resources.length > 0 ? <NumberTicker value={resources.length} /> : 0} Resource{resources.length == 1 ? "" : "s"}
                     </h1>
                     <p>Latest news about cybersecurity</p>
                 </div>

@@ -13,6 +13,7 @@ import Link from "next/link";
 import FilterResources from "./resources/FilterResources";
 import { RangeDatePicker } from "./RangeDatePicker";
 import { DateRange } from "react-day-picker";
+import { X } from "lucide-react";
 
 export type ResourceCardType = {
     title: string;
@@ -70,7 +71,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
 
     return (
         <>
-            <div className="mb-20 mx-auto max-w-xl space-y-4">
+            <div className="mb-20 mx-auto max-w-2xl space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
@@ -93,6 +94,10 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                     date={dateRangeFilter}
                     onDateChange={setDateRangeFilter}
                 />
+                <Button variant={"ghost"} className="px-2" onClick={() => {
+                    setSearchFilters([]);
+                    setDateRangeFilter(undefined);
+                }}><X className="mr-px" /> Reset</Button>
                 </div>
             </div>
 
