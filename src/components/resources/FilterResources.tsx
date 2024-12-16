@@ -50,7 +50,6 @@ export default function FilterResources({ filters, selectedFilters, onSelectedFi
                                     key={filter.value}
                                     value={filter.value}
                                     onSelect={(currentValue) => {
-                                        setOpen(false);
                                         onSelectedFiltersChange(filter);
                                     }}
                                 >
