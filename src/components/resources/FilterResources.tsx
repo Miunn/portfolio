@@ -29,10 +29,13 @@ export default function FilterResources({ filters, selectedFilters, onSelectedFi
                     className="w-fit justify-between"
                 >Filter
                     {selectedFilters.length > 0 ? <Separator orientation="vertical" className="mx-2" /> : null}
-                    <div className="space-x-2 flex gap-2">
-                        {selectedFilters.map((filter) => (
+                    <div className="space-x-2 flex gap-1">
+                        {selectedFilters.length > 2
+                        ? <Badge>{ selectedFilters.length } selected</Badge>
+                        : selectedFilters.map((filter) => (
                             <Badge>{filter.label}</Badge>
-                        ))}
+                        ))
+                    }
                     </div>
                 </Button>
             </PopoverTrigger>
