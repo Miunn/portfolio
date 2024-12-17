@@ -2,8 +2,13 @@
 
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { isAuthenticated } from "./auth";
 
 export async function createResource(title: string, description: string, text: string, url: string, tags: { value: string, label: string }[]) {
+
+    if (!(await isAuthenticated())) {
+        return { status: "Unauthorized", message: "You must be logged in to create a new resource" }
+    }
 
     const resource = await prisma.resource.create({
         data: {

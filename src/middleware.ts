@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { tokenValidation } from './lib/utils'
+import { tokenValidation } from './lib/auth'
  
 export const config = {
   matcher: '/login',

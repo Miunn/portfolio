@@ -37,8 +37,6 @@ export default function LoginForm() {
         });
         setLoading(false);
 
-        console.log(r);
-
         if (r.ok) {
             toast({
                 title: "Logged in",

@@ -1,3 +1,4 @@
+import { isAuthenticated } from "@/actions/auth";
 import { getResources, getTags } from "@/actions/resources";
 import CreateResourceDialog from "@/components/resources/CreateResourceDialog";
 import ResourcesExpandableLayout, { ResourceCardType } from "@/components/ResourcesExpandableLayout";
@@ -14,6 +15,7 @@ export default async function Resources() {
 
     const resources = await getResources();
     const tags = (await getTags()).map((tag) => ({ value: tag.value!, label: tag.label! }));
+    const isAuth = await isAuthenticated();
 
     return (
         <div className="relative w-full max-w-6xl mx-auto overflow-hidden mb-52">
@@ -24,7 +26,10 @@ export default async function Resources() {
                     </h1>
                     <p>Latest news about cybersecurity</p>
                 </div>
-                <CreateResourceDialog tags={tags} />
+                {isAuth
+                    ? <CreateResourceDialog tags={tags} />
+                    : null
+                }
             </div>
             <GridPattern
                 className={cn(

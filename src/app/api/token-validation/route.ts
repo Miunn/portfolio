@@ -1,4 +1,4 @@
-import { tokenValidation } from "@/lib/utils";
+import { tokenValidation } from "@/lib/auth";
 
 export async function GET(request: Request) {
 
