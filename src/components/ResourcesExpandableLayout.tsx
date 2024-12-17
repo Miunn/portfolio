@@ -17,11 +17,11 @@ import { X } from "lucide-react";
 
 export type ResourceCardType = {
     title: string;
-    description: string;
     text: string;
     content: () => ReactNode;
     url: string;
     tags?: ResourceCardTag[];
+    createdAt: Date;
 }
 
 export type ResourceCardTag = {
@@ -78,26 +78,26 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                     onSubmit={() => { }}
                 />
                 <div className="flex gap-2">
-                <FilterResources
-                    filters={tags ? tags : []}
-                    selectedFilters={searchFilters}
-                    onSelectedFiltersChange={(value) => {
-                        if (searchFilters.includes(value)) {
-                            setSearchFilters(searchFilters.filter((filter) => filter !== value))
-                        } else {
-                            setSearchFilters([...searchFilters, value])
-                        }
-                    }}
-                    emptyLabel={"No tags"}
-                />
-                <RangeDatePicker
-                    date={dateRangeFilter}
-                    onDateChange={setDateRangeFilter}
-                />
-                <Button variant={"ghost"} className="px-2" onClick={() => {
-                    setSearchFilters([]);
-                    setDateRangeFilter(undefined);
-                }}><X className="mr-px" /> Reset</Button>
+                    <FilterResources
+                        filters={tags ? tags : []}
+                        selectedFilters={searchFilters}
+                        onSelectedFiltersChange={(value) => {
+                            if (searchFilters.includes(value)) {
+                                setSearchFilters(searchFilters.filter((filter) => filter !== value))
+                            } else {
+                                setSearchFilters([...searchFilters, value])
+                            }
+                        }}
+                        emptyLabel={"No tags"}
+                    />
+                    <RangeDatePicker
+                        date={dateRangeFilter}
+                        onDateChange={setDateRangeFilter}
+                    />
+                    <Button variant={"ghost"} className="px-2" onClick={() => {
+                        setSearchFilters([]);
+                        setDateRangeFilter(undefined);
+                    }}><X className="mr-px" /> Reset</Button>
                 </div>
             </div>
 
@@ -138,22 +138,22 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                             <motion.div
                                 layoutId={`card-${active.title}-${id}`}
                                 ref={ref}
-                                className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-xl overflow-hidden"
+                                className="w-full md:max-w-[700px] max-w-[500px] h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-xl overflow-hidden"
                             >
-                                <Card>
+                                <Card className="flex flex-col">
                                     <CardHeader>
                                         <motion.div layoutId={`title-${active.title}-${id}`}>
                                             <CardTitle>{active.title}</CardTitle>
                                         </motion.div>
-                                        <motion.div layoutId={`description-${active.description}-${id}`}>
-                                            <CardDescription>{active.description}</CardDescription>
+                                        <motion.div layoutId={`createdAt-${active.createdAt.toString()}-${id}`}>
+                                            <CardDescription>{active.createdAt.toDateString()}</CardDescription>
                                         </motion.div>
                                     </CardHeader>
 
-                                    <CardContent>
-                                        <motion.div layoutId={`tags-${active.title}-${active.description}-${id}`} className="mb-6 flex flex-wrap gap-2">
-                                            {active.tags?.map((tag) => (
-                                                <TooltipProvider>
+                                    <CardContent className="flex-1 h-[90%]">
+                                        {active.tags && active.tags.length > 0 ? <motion.div layoutId={`tags-${active.title}-${id}`} className="mb-6 flex flex-wrap gap-2">
+                                            {active.tags?.map((tag, index) => (
+                                                <TooltipProvider key={index}>
                                                     <Tooltip>
                                                         <TooltipTrigger><Badge key={tag.value}>{tag.label}</Badge></TooltipTrigger>
                                                         <TooltipContent>
@@ -162,28 +162,31 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                                     </Tooltip>
                                                 </TooltipProvider>
                                             ))}
-                                        </motion.div>
-                                        <motion.p layoutId={`text-${active.text}-${id}`}>
-                                            {active.text}
-                                        </motion.p>
-                                        <ScrollArea className="h-72 w-full">
-                                            <div className="pt-4 relative">
+                                        </motion.div> : null}
+                                        <ScrollArea className="h-[600px] w-full pr-2">
+                                            <div className="relative">
                                                 <motion.div
-                                                    layout
-                                                    initial={{ opacity: 0 }}
-                                                    animate={{ opacity: 1 }}
-                                                    exit={{ opacity: 0 }}
-                                                    className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                                                >
-                                                    {typeof active.content === "function"
-                                                        ? active.content()
-                                                        : active.content}
-                                                </motion.div>
+                                                    layoutId={`text-${active.text.slice(0, 50)}-${id}`}
+                                                    className="text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                                                    dangerouslySetInnerHTML={{ __html: active.text }}
+                                                />
                                             </div>
                                         </ScrollArea>
                                     </CardContent>
                                     <CardFooter className="flex justify-end">
-                                        <motion.div layoutId={`button-${active.title}-${id}`} >
+                                        <motion.div
+                                            key={`seemore-active-${id}`}
+                                            layout
+                                            initial={{
+                                                opacity: 0,
+                                            }}
+                                            animate={{
+                                                opacity: 1,
+                                            }}
+                                            exit={{
+                                                opacity: 0,
+                                            }}
+                                        >
                                             <Link href={active.url} target="_blank" onClick={() => { }}>
                                                 <Button className="rounded-3xl" type={"button"}>See more</Button>
                                             </Link>
@@ -206,21 +209,19 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                 <Card className="bg-background w-full h-80 flex flex-col">
                                     <CardHeader>
                                         <motion.div layoutId={`title-${card.title}-${id}`}>
-                                            <CardTitle>{card.title}</CardTitle>
+                                            <CardTitle className="truncate">{card.title}</CardTitle>
                                         </motion.div>
-                                        <motion.div layoutId={`description-${card.description}-${id}`}>
-                                            <CardDescription>{card.description}</CardDescription>
+                                        <motion.div layoutId={`createdAt-${card.createdAt.toString()}-${id}`}>
+                                            <CardDescription>{card.createdAt.toDateString()}</CardDescription>
                                         </motion.div>
                                     </CardHeader>
 
                                     <CardContent className="flex-1">
-                                        <motion.p layoutId={`text-${card.text}-${id}`}>
-                                            {card.text}
-                                        </motion.p>
+                                        <motion.p layoutId={`text-${card.text.slice(0, 50)}-${id}`} className="line-clamp-5" dangerouslySetInnerHTML={{ __html: card.text }} />
                                     </CardContent>
 
                                     <CardFooter className="flex justify-between">
-                                        <motion.div layoutId={`tags-${card.title}-${card.description}-${id}`} className="flex flex-wrap gap-2">
+                                        <motion.div layoutId={`tags-${card.title}-${id}`} className="flex flex-wrap gap-2">
                                             {card.tags?.slice(0, 2).map((tag) => (
                                                 <Badge key={tag.value}>{tag.label}</Badge>
                                             ))}
@@ -237,11 +238,6 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                                 </TooltipProvider>
                                                 : null
                                             }
-                                        </motion.div>
-                                        <motion.div layoutId={`button-${card.title}-${id}`}>
-                                            <Link href={card.url} target="_blank">
-                                                <Button className="rounded-3xl" type={"button"}>See more</Button>
-                                            </Link>
                                         </motion.div>
                                     </CardFooter>
                                 </Card>

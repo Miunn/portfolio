@@ -13,7 +13,6 @@ export async function createResource(title: string, description: string, text: s
     const resource = await prisma.resource.create({
         data: {
             title: title,
-            description: description,
             text: text,
             url: url,
             tags: {
