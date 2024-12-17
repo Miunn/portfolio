@@ -33,7 +33,7 @@ export default function FilterResources({ filters, selectedFilters, onSelectedFi
                         {selectedFilters.length > 2
                         ? <Badge>{ selectedFilters.length } selected</Badge>
                         : selectedFilters.map((filter) => (
-                            <Badge>{filter.label}</Badge>
+                            <Badge key={filter.value}>{filter.label}</Badge>
                         ))
                     }
                     </div>

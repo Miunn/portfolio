@@ -3,7 +3,7 @@
 import { LOGIN_FORM_SCHEMA } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
 import { FormField, FormItem, FormLabel, FormControl, Form, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
@@ -11,10 +11,11 @@ import { Button } from "./ui/button";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { set } from "date-fns";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
     const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
 
     const loginForm = useForm<z.infer<typeof LOGIN_FORM_SCHEMA>>({
         resolver: zodResolver(LOGIN_FORM_SCHEMA),
@@ -43,6 +44,7 @@ export default function LoginForm() {
                 title: "Logged in",
                 description: "User successfully logged in"
             })
+            router.push("/resources");
         } else {
             toast({
                 title: "Failed to login",
