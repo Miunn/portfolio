@@ -10,7 +10,6 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('jwt_session');
 
   if (!token) {
-    console.log("No token, should not redirect");
       return NextResponse.next({
         request: request
       });
@@ -22,7 +21,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/resources', request.url))
   }
 
-  console.log("Token invalid, should not redirect");
   return NextResponse.next({
     request: request
   })
