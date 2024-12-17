@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     return new Response('OK', {
         headers: {
-            'Set-Cookie': `jwt_session=${token}; Path=/; Same-Site=Strict; Max-Age=${process.env.COOKIE_JWT_MAX_AGE!}`
+            'Set-Cookie': `jwt_session=${token}; Path=/; Same-Site=Strict; Max-Age=${process.env.COOKIE_JWT_MAX_AGE!}; Secure=${process.env.NODE_ENV==='production'}`
         }
     })
 }
