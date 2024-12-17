@@ -124,7 +124,7 @@ export function MultiSelect({ items, selectedItems, setSelectedItems }: MultiSel
             <CommandList>
               <div className="absolute top-3 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                 <CommandGroup className="h-full overflow-auto">
-                  {inputValue !== "" ? <CommandItem
+                  {inputValue !== "" && !selectables.map((selectable) => selectable.value).includes(inputValue.toLowerCase().replace(' ', '-')) ? <CommandItem
                     key={`create-custom`}
                     onMouseDown={(e) => {
                       e.preventDefault();
