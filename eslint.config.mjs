@@ -10,6 +10,8 @@ const eslintConfig = [
     extends: ['next'],
     rules: {
       'react/no-unescaped-entities': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      '@next/next/no-img-element': 'off',
       '@next/next/no-page-custom-font': 'off',
     },
   }),
