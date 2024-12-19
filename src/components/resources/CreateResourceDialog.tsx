@@ -145,7 +145,7 @@ export default function CreateResourceDialog({ tags }: { tags: ResourceCardTag[]
                                                     {...field} />
                                             </FormControl>
                                             <FormDescription>
-                                                Resource's tags
+                                                Resource&apos;s tags
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
