@@ -137,7 +137,7 @@ export function MultiSelect({ items, selectedItems, setSelectedItems }: MultiSel
                     }}
                     className={"cursor-pointer"}
                   >
-                    Create "{inputValue}"
+                    Create &quot;{inputValue}&quot;
                   </CommandItem>
                   : null}
                   {selectables.map((item) => {
