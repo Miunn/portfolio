@@ -20,7 +20,7 @@ import { deleteResource } from "@/actions/resources";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 export type ResourceCardType = {
-    id: number;
+    id: string;
     title: string;
     text: string;
     content: () => ReactNode;
