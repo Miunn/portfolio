@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Resource {
-  id    Int     @id @default(autoincrement())
+  id    String     @id @default(cuid())
   title String? @db.VarChar(255)
   text String? @db.Text
   url String? @db.VarChar(255)
@@ -17,7 +17,7 @@ model Resource {
 }
 
 model Tag {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
   value String? @db.VarChar(100) @unique
   label String? @db.VarChar(100)
   resources Resource[]

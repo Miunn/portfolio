@@ -14,8 +14,13 @@ import FilterResources from "./resources/FilterResources";
 import { RangeDatePicker } from "./RangeDatePicker";
 import { DateRange } from "react-day-picker";
 import { X } from "lucide-react";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+import { deleteResource } from "@/actions/resources";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 export type ResourceCardType = {
+    id: number;
     title: string;
     text: string;
     content: () => ReactNode;
@@ -101,127 +106,23 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                 </div>
             </div>
 
-            <div>
-                <AnimatePresence>
-                    {active && typeof active === "object" && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/20 h-full w-full z-10"
-                        />
-                    )}
-                </AnimatePresence>
-                <AnimatePresence>
-                    {active && typeof active === "object" ? (
-                        <div className="fixed inset-0  grid place-items-center z-[100]">
-                            <motion.button
-                                key={`button-${active.title}-${id}`}
-                                layout
-                                initial={{
-                                    opacity: 0,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    transition: {
-                                        duration: 0.05,
-                                    },
-                                }}
-                                className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
-                                onClick={() => setActive(null)}
-                            >
-                                <CloseIcon />
-                            </motion.button>
-                            <motion.div
-                                layoutId={`card-${active.title}-${id}`}
-                                ref={ref}
-                                className="w-full md:max-w-[700px] max-w-[500px] h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-xl overflow-hidden"
-                            >
-                                <Card className="flex flex-col">
-                                    <CardHeader>
-                                        <motion.div layoutId={`title-${active.title}-${id}`}>
-                                            <CardTitle>{active.title}</CardTitle>
-                                        </motion.div>
-                                        <motion.div layoutId={`createdAt-${active.createdAt.toString()}-${id}`}>
-                                            <CardDescription>{active.createdAt.toDateString()}</CardDescription>
-                                        </motion.div>
-                                    </CardHeader>
-
-                                    <CardContent className="flex-1 h-[90%]">
-                                        {active.tags && active.tags.length > 0 ? <motion.div layoutId={`tags-${active.title}-${id}`} className="mb-6 flex flex-wrap gap-2">
-                                            {active.tags?.map((tag, index) => (
-                                                <TooltipProvider key={index}>
-                                                    <Tooltip>
-                                                        <TooltipTrigger><Badge key={tag.value}>{tag.label}</Badge></TooltipTrigger>
-                                                        <TooltipContent>
-                                                            {tag.value}
-                                                        </TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            ))}
-                                        </motion.div> : null}
-                                        <ScrollArea className="h-[600px] w-full pr-2">
-                                            <div className="relative">
-                                                <motion.div
-                                                    layoutId={`text-${active.text.slice(0, 50)}-${id}`}
-                                                    className="text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                                                    dangerouslySetInnerHTML={{ __html: active.text }}
-                                                />
-                                            </div>
-                                        </ScrollArea>
-                                    </CardContent>
-                                    <CardFooter className="flex justify-end">
-                                        <motion.div
-                                            key={`seemore-active-${id}`}
-                                            layout
-                                            initial={{
-                                                opacity: 0,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                            }}
-                                        >
-                                            <Link href={active.url} target="_blank" onClick={() => { }}>
-                                                <Button className="rounded-3xl" type={"button"}>See more</Button>
-                                            </Link>
-                                        </motion.div>
-                                    </CardFooter>
-                                </Card>
-                            </motion.div>
-                        </div>
-                    ) : null}
-                </AnimatePresence>
-                <div className="max-w-6xl w-full grid sm:grid-cols-4 grid-cols-3">
-                    {displayedResources.length > 0
-                        ? displayedResources.map((card, index) => (
-                            <motion.div
-                                layoutId={`card-${card.title}-${id}`}
-                                key={`card-${card.title}-${id}`}
-                                onClick={() => setActive(card)}
-                                className="bg-background h-80 flex flex-col z-10 p-2 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 cursor-pointer"
-                            >
-                                <Card className="bg-background w-full h-80 flex flex-col">
-                                    <CardHeader>
-                                        <motion.div layoutId={`title-${card.title}-${id}`}>
+            <div className="w-full grid sm:grid-cols-4 grid-cols-3">
+                {displayedResources.length > 0
+                    ? displayedResources.map((card, index) => (
+                        <Dialog key={index}>
+                            <DialogTrigger className="bg-inherit z-10">
+                                <div className="p-3 hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer">
+                                    <Card className="bg-background w-full h-80 flex flex-col text-start">
+                                        <CardHeader>
                                             <CardTitle className="truncate">{card.title}</CardTitle>
-                                        </motion.div>
-                                        <motion.div layoutId={`createdAt-${card.createdAt.toString()}-${id}`}>
                                             <CardDescription>{card.createdAt.toDateString()}</CardDescription>
-                                        </motion.div>
-                                    </CardHeader>
+                                        </CardHeader>
 
-                                    <CardContent className="flex-1">
-                                        <motion.p layoutId={`text-${card.text.slice(0, 50)}-${id}`} className="line-clamp-5" dangerouslySetInnerHTML={{ __html: card.text }} />
-                                    </CardContent>
+                                        <CardContent className="flex-1 pb-4">
+                                            <p className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.text }} />
+                                        </CardContent>
 
-                                    <CardFooter className="flex justify-between">
-                                        <motion.div layoutId={`tags-${card.title}-${id}`} className="flex flex-wrap gap-2">
+                                        {card.tags && card.tags!.length > 0 ? <CardFooter className="flex gap-2">
                                             {card.tags?.slice(0, 2).map((tag) => (
                                                 <Badge key={tag.value}>{tag.label}</Badge>
                                             ))}
@@ -238,14 +139,58 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                                 </TooltipProvider>
                                                 : null
                                             }
-                                        </motion.div>
-                                    </CardFooter>
-                                </Card>
-                            </motion.div>
-                        ))
-                        : <p>No resources yet</p>
-                    }
-                </div>
+                                        </CardFooter> : null}
+                                    </Card>
+                                </div>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-6xl">
+                                <DialogHeader>
+                                    <DialogTitle>{card.title}</DialogTitle>
+                                    <DialogDescription>{card.createdAt.toDateString()}</DialogDescription>
+                                </DialogHeader>
+                                {card.tags && card.tags.length > 0
+                                    ? <div className="flex gap-3">
+                                        {card.tags?.map((tag, index) => (
+                                            <Badge key={tag.value} className="w-fit">{tag.label}</Badge>
+                                        ))} </div>
+                                    : null}
+                                < ScrollArea className="h-[600px] w-full pr-3">
+                                    <div className="relative">
+                                        <motion.div
+                                            layoutId={`text-${card.text.slice(0, 50)}-${id}`}
+                                            className="text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
+                                            dangerouslySetInnerHTML={{ __html: card.text }}
+                                        />
+                                    </div>
+                                </ScrollArea>
+                                <DialogFooter className="flex justify-end gap-4">
+                                    <AlertDialog>
+                                        <AlertDialogTrigger>
+                                            <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent ref={ref} className="z-[100]">
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you sure</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This will delete the resource permanently, this action cannot but undone.
+                                                </AlertDialogDescription>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => deleteResource(card.id)}>Delete</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogHeader>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                    <Link href={card.url} target="_blank" onClick={() => { }}>
+                                        <Button className="rounded-3xl" type={"button"}>See more</Button>
+                                    </Link>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+
+                    ))
+                    : <p>No resources yet</p>
+                }
             </div>
         </>
     );
