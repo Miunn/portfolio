@@ -26,7 +26,7 @@ export async function createResource(title: string, description: string, text: s
     return { status: "ok" };
 }
 
-export async function deleteResource(id: number) {
+export async function deleteResource(id: string) {
     
     if (!(await isAuthenticated())) {
         return { status: "Unauthorized", message: "You must be logged in to create a new resource" }

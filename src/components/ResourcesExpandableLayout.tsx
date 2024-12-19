@@ -74,6 +74,10 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
 
     useOutsideClick(ref, () => setActive(null));
 
+    function cuid() {
+        throw new Error("Function not implemented.");
+    }
+
     return (
         <>
             <div className="mb-20 mx-auto max-w-2xl space-y-4">
@@ -119,17 +123,17 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                         </CardHeader>
 
                                         <CardContent className="flex-1 pb-4">
-                                            <p className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.text }} />
+                                            <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.text }} />
                                         </CardContent>
 
                                         {card.tags && card.tags!.length > 0 ? <CardFooter className="flex gap-2">
-                                            {card.tags?.slice(0, 2).map((tag) => (
-                                                <Badge key={tag.value}>{tag.label}</Badge>
+                                            {card.tags?.slice(0, 2).map((tag, index) => (
+                                                <Badge key={`${tag.value}-${index}`} className="truncate">{tag.label}</Badge>
                                             ))}
                                             {(card.tags?.length ?? 0) - 2 > 0
                                                 ? <TooltipProvider>
                                                     <Tooltip>
-                                                        <TooltipTrigger>
+                                                        <TooltipTrigger asChild>
                                                             <Badge>+ {card.tags!.length - 2}</Badge>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
@@ -151,21 +155,15 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                 {card.tags && card.tags.length > 0
                                     ? <div className="flex gap-3">
                                         {card.tags?.map((tag, index) => (
-                                            <Badge key={tag.value} className="w-fit">{tag.label}</Badge>
+                                            <Badge key={`${tag.value}-${index}`} className="w-fit">{tag.label}</Badge>
                                         ))} </div>
                                     : null}
-                                < ScrollArea className="h-[600px] w-full pr-3">
-                                    <div className="relative">
-                                        <motion.div
-                                            layoutId={`text-${card.text.slice(0, 50)}-${id}`}
-                                            className="text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
-                                            dangerouslySetInnerHTML={{ __html: card.text }}
-                                        />
-                                    </div>
+                                <ScrollArea className="h-[600px] w-full pr-3">
+                                    <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
                                     <AlertDialog>
-                                        <AlertDialogTrigger>
+                                        <AlertDialogTrigger asChild>
                                             <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
                                         </AlertDialogTrigger>
                                         <AlertDialogContent ref={ref} className="z-[100]">
