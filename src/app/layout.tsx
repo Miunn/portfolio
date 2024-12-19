@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import {Inter, Martian_Mono} from "next/font/google";
+import { Inter, Martian_Mono } from "next/font/google";
 import "./globals.css";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter(
-    { subsets: ["latin"],
-      variable: "--font-inter"
-    }
+  {
+    subsets: ["latin"],
+    variable: "--font-inter"
+  }
 );
 
 const martianMono = Martian_Mono(
-    { subsets: ["latin"],
-        variable: "--font-martian"
-    }
+  {
+    subsets: ["latin"],
+    variable: "--font-martian"
+  }
 );
 
 export const metadata: Metadata = {
@@ -27,11 +32,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={"dark"}>
+    <html lang="en" className={"dark overflow-x-hidden"}>
       <body className={cn(
-          "min-h-screen font-inter antialiased",
-          inter.className
-      )}>{children}</body>
+        "w-screen min-h-screen font-inter antialiased overflow-x-hidden",
+        inter.className
+      )}>
+        <header className="absolute top-0 left-1/2 -translate-x-[50%] z-50 w-full max-w-6xl flex justify-end py-6">
+          <nav>
+            <ul>
+              <li>
+                <Button variant={"link"}>
+                  <Link href={"/resources"} rel="noreferer">Resources</Link>
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        {children}
+
+        <Toaster />
+      </body>
     </html>
   );
 }
