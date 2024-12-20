@@ -21,7 +21,7 @@ jobs:
         env:
           POSTGRES_DB: portfoliodata
           POSTGRES_USER: portfolio_connector
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: secret
           POSTGRES_PORT: 5432
         ports:
           # maps tcp port 5432 on service container to the host
@@ -48,5 +48,5 @@ jobs:
       - name: Build Project
         env:
           # The hostname used to communicate with the PostgreSQL service container
-          DATABASE_URL: "postgresql://postgres:portfolio_connector@postgres:5432/portfoliodata?schema=public"
+          DATABASE_URL: "postgresql://portfolio_connector:secret@postgres:5432/portfoliodata?schema=public"
         run: npm run build
