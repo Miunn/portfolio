@@ -130,7 +130,7 @@ const Particles: React.FC<ParticlesProps> = ({
         circles.current.push(circle);
       }
     }
-  }, [dpr, rgb]);
+  }, []);
 
   const drawParticles = useCallback(() => {
     clearContext();
@@ -195,7 +195,7 @@ const Particles: React.FC<ParticlesProps> = ({
       }
     });
     window.requestAnimationFrame(animate);
-  }, [circleParams, drawCircle, ease, staticity, vx, vy]);
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -226,7 +226,7 @@ const Particles: React.FC<ParticlesProps> = ({
 
   useEffect(() => {
     onMouseMove();
-  }, [mousePosition.x, mousePosition.y, onMouseMove]);
+  }, [onMouseMove]);
 
   useEffect(() => {
     initCanvas();
