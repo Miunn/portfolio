@@ -5,7 +5,20 @@ import {CardDescription, CardTitle} from "@/components/ui/card";
 
 export default function EducationTracing() {
     return (
-        <TracingBeamFull className={"relative mx-auto antialiased"}>
+        <div className={"relative mx-auto h-full"}>
+            <div className="absolute top-0 bottom-0">
+                <svg viewBox="0 0 20 564" width="20" className="block h-full" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 1 1 V 563" fill="none" stroke="url(#gradient)" stroke-width="1.25"></path>
+                    <defs>
+                        <linearGradient id="gradient" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="0" y2="564">
+                            <stop stop-color="#18CCFC" stop-opacity="0"></stop>
+                            <stop stop-color="#18CCFC"></stop>
+                            <stop offset="0.325" stop-color="#6344F5"></stop>
+                            <stop offset="1" stop-color="#AE48FF" stop-opacity="1"></stop>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
             <div className={"space-y-20 ml-6 md:ml-16"}>
                 <div className={"flex gap-6 mb-10"}>
                     <Image src={"/images/insa.png"} alt={"INSA Hauts-de-France"} width={100} height={100}
@@ -39,6 +52,6 @@ export default function EducationTracing() {
 
                 <p>* National institute of applied sciences</p>
             </div>
-        </TracingBeamFull>
+        </div>
     )
 }
