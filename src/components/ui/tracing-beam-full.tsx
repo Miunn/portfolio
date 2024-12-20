@@ -2,10 +2,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
-  useTransform,
-  useScroll,
-  useVelocity,
-  useSpring,
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +19,7 @@ export const TracingBeamFull = ({
     if (contentRef.current) {
       setSvgHeight(contentRef.current.getBoundingClientRect().height);
     }
-  }, [contentRef.current]);
+  }, []);
 
   return (
     <motion.div

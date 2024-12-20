@@ -32,7 +32,7 @@ export function MultiSelect({ items, selectedItems, setSelectedItems }: MultiSel
 
   const handleUnselect = React.useCallback((item: Item) => {
     setSelectedItems((prev) => prev.filter((s) => s.value !== item.value));
-  }, []);
+  }, [setSelectedItems]);
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -53,7 +53,7 @@ export function MultiSelect({ items, selectedItems, setSelectedItems }: MultiSel
         }
       }
     },
-    [],
+    [setSelectedItems],
   );
 
   const selectables = items.filter(

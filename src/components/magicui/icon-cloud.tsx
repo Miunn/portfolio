@@ -3,6 +3,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {useTheme} from "next-themes";
 import {Cloud, fetchSimpleIcons, ICloud, renderSimpleIcon, SimpleIcon,} from "react-icon-cloud";
+import Image from "next/image";
 
 export const cloudProps: Omit<ICloud, "children"> = {
     containerProps: {
@@ -84,7 +85,7 @@ export const renderCustomImage = (icon: Icon, isPng: boolean, theme: string) => 
 
     return (
         <a key={guid()} {...a}>
-            <img {...i} />
+            <Image alt={icon.name} {...i} />
         </a>
     )
 }
