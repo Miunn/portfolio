@@ -79,7 +79,6 @@ export const renderCustomImage = (icon: Icon, isPng: boolean, theme: string) => 
     const i = {
         height: icon.height,
         width: icon.width,
-        alt: icon.name,
         src: imgSrc,
     }
 
