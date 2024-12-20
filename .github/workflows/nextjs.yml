@@ -48,5 +48,5 @@ jobs:
       - name: Build Project
         env:
           # The hostname used to communicate with the PostgreSQL service container
-          DATABASE_URL: "postgresql://postgres:portfolio_connector@127.0.0.1:5432/portfoliodata?schema=public"
+          DATABASE_URL: "postgresql://postgres:portfolio_connector@localhost:5432/portfoliodata?schema=public"
         run: npm run build
