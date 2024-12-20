@@ -44,6 +44,9 @@ jobs:
         run: npm install
 
       - name: Deploy prisma schema
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          DATABASE_URL: "postgresql://portfolio_connector:secret@postgres:5432/portfoliodata?schema=public"
         run: npx prisma migrate deploy
 
         # Runs a script that creates a PostgreSQL table, populates
