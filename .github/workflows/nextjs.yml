@@ -22,6 +22,10 @@ jobs:
           POSTGRES_DB: portfoliodata
           POSTGRES_USER: portfolio_connector
           POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
