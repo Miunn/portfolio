@@ -64,21 +64,21 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
         const searchTokens = searchValue.split(" ");
 
         let output = resources;
-        
+
         for (const token of searchTokens) {
             output = output.filter((r) => {
                 if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
                     return r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token);
                 }
-    
+
                 if (dateRange.from !== undefined && dateRange.to === undefined) {
                     return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
                 }
-    
+
                 if (dateRange.from === undefined && dateRange.to !== undefined) {
                     return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
                 }
-    
+
                 return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
             });
         }
@@ -117,14 +117,15 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
 
     return (
         <>
-            <div className="mb-20 mx-auto max-w-2xl space-y-4">
+            <div className="mb-20 mx-auto md:max-w-2xl sm:max-w-xl max-w-sm space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
                     onSubmit={() => { }}
                 />
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                     <FilterResources
+                        triggerClassName="w-full sm:w-auto"
                         filters={tags ? tags : []}
                         selectedFilters={searchFilters}
                         onSelectedFiltersChange={(value) => {
@@ -137,10 +138,11 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                         emptyLabel={"No tags"}
                     />
                     <RangeDatePicker
+                        triggerClassName={"w-full sm:w-auto"}
                         date={dateRangeFilter}
                         onDateChange={handleDateChange}
                     />
-                    <Button variant={"ghost"} className="px-2" onClick={() => {
+                    <Button variant={"ghost"} className="px-2 w-fit" onClick={() => {
                         setSearchFilters([]);
                         setDateRangeFilter(undefined);
                     }}><X className="mr-px" /> Reset</Button>
