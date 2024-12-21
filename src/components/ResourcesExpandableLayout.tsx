@@ -172,7 +172,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     <DialogDescription>{card.createdAt.toDateString()}</DialogDescription>
                                 </DialogHeader>
                                 {card.tags && card.tags.length > 0
-                                    ? <div className="flex gap-3">
+                                    ? <div className="flex gap-3 flex-wrap">
                                         {card.tags?.map((tag, index) => (
                                             <Badge key={`${tag.value}-${index}`} className="w-fit">{tag.label}</Badge>
                                         ))} </div>
@@ -181,6 +181,9 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
+                                    <Link href={card.url} target="_blank" onClick={() => { }}>
+                                        <Button className="rounded-3xl w-full" type={"button"}>See more</Button>
+                                    </Link>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
@@ -193,14 +196,11 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                                 </AlertDialogDescription>
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => deleteResource(card.id)}>Delete</AlertDialogAction>
+                                                    <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground">Delete</AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogHeader>
                                         </AlertDialogContent>
                                     </AlertDialog>
-                                    <Link href={card.url} target="_blank" onClick={() => { }}>
-                                        <Button className="rounded-3xl" type={"button"}>See more</Button>
-                                    </Link>
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
