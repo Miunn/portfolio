@@ -50,9 +50,50 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
+    function tagMatchingSearch(tags: ResourceCardTag[], search: string) {
+        const lowerSearch = search.toLowerCase();
+        for (const tag of tags) {
+            if (tag.value.toLowerCase().includes(lowerSearch) || tag.label.toLowerCase().includes(lowerSearch)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): ResourceCardType[] {
+        const searchTokens = searchValue.split(" ");
+
+        let output = resources;
+        
+        for (const token of searchTokens) {
+            output = output.filter((r) => {
+                if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
+                    return r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token);
+                }
+    
+                if (dateRange.from !== undefined && dateRange.to === undefined) {
+                    return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+                }
+    
+                if (dateRange.from === undefined && dateRange.to !== undefined) {
+                    return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+                }
+    
+                return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+            });
+        }
+
+        return output;
+    }
+
     function handleSearchChange(value: string) {
         setSearchInput(value);
-        setDisplayedResources(resources.filter((r) => r.title.toLowerCase().includes(value.toLowerCase())))
+        setDisplayedResources(getMatchingResource(value, dateRangeFilter));
+    }
+
+    function handleDateChange(date: DateRange | undefined) {
+        setDateRangeFilter(date);
+        setDisplayedResources(getMatchingResource(searchInput, date));
     }
 
     useEffect(() => {
@@ -97,7 +138,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                     />
                     <RangeDatePicker
                         date={dateRangeFilter}
-                        onDateChange={setDateRangeFilter}
+                        onDateChange={handleDateChange}
                     />
                     <Button variant={"ghost"} className="px-2" onClick={() => {
                         setSearchFilters([]);

@@ -55,6 +55,7 @@ export async function getResources() {
         include: {
             tags: {
                 select: {
+                    value: true,
                     label: true
                 }
             }
