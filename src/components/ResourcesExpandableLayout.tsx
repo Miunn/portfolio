@@ -46,7 +46,6 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const [dateRangeFilter, setDateRangeFilter] = useState<DateRange | undefined>(undefined);
     const [displayedResources, setDisplayedResources] = useState<ResourceCardType[]>(resources);
 
-    const [active, setActive] = useState<(ResourceCardType) | boolean | null>(null);
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
@@ -96,28 +95,9 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
         setDisplayedResources(getMatchingResource(searchInput, date));
     }
 
-    useEffect(() => {
-        function onKeyDown(event: KeyboardEvent) {
-            if (event.key === "Escape") {
-                setActive(false);
-            }
-        }
-
-        if (active && typeof active === "object") {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
-        }
-
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-    }, [active]);
-
-    useOutsideClick(ref, () => setActive(null));
-
     return (
         <>
-            <div className="mb-10 sm:mb-20 sm:mx-auto mx-11 md:max-w-2xl sm:max-w-xl max-w-sm space-y-4">
+            <div className="mb-10 sm:mb-20 sm:mx-auto w-full px-6 sm:px-0 md:max-w-2xl sm:max-w-xl space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
