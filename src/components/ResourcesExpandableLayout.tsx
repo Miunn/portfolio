@@ -61,21 +61,29 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     }
 
     function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): ResourceCardType[] {
-        return resources.filter((r) => {
-            if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
-                return r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue);
-            }
+        const searchTokens = searchValue.split(" ");
 
-            if (dateRange.from !== undefined && dateRange.to === undefined) {
-                return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
-            }
+        let output = resources;
+        
+        for (const token of searchTokens) {
+            output = output.filter((r) => {
+                if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
+                    return r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token);
+                }
+    
+                if (dateRange.from !== undefined && dateRange.to === undefined) {
+                    return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+                }
+    
+                if (dateRange.from === undefined && dateRange.to !== undefined) {
+                    return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+                }
+    
+                return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
+            });
+        }
 
-            if (dateRange.from === undefined && dateRange.to !== undefined) {
-                return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
-            }
-
-            return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
-        });
+        return output;
     }
 
     function handleSearchChange(value: string) {
