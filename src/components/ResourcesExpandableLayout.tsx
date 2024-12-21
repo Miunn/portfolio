@@ -74,10 +74,6 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
 
     useOutsideClick(ref, () => setActive(null));
 
-    function cuid() {
-        throw new Error("Function not implemented.");
-    }
-
     return (
         <>
             <div className="mb-20 mx-auto max-w-2xl space-y-4">
