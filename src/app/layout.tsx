@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={"dark overflow-x-hidden"}>
       <body className={cn(
-        "w-screen min-h-screen font-inter antialiased overflow-x-hidden",
+        "relative w-screen min-h-dvh font-inter antialiased overflow-hidden",
         inter.className
       )}>
         <header className="absolute top-0 left-1/2 -translate-x-[50%] z-50 w-full max-w-6xl flex justify-end py-6">

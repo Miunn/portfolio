@@ -15,15 +15,19 @@ import {
 } from "@/components/ui/popover"
 
 export interface RangeDatePickerProps {
-  className?: React.HTMLAttributes<HTMLDivElement>;
+  className?: string;
+  triggerClassName?: string;
   date: DateRange | undefined;
   onDateChange: SelectRangeEventHandler;
+  numberOfMonths?: number;
 }
 
 export function RangeDatePicker({
   className,
+  triggerClassName,
   date,
-  onDateChange
+  onDateChange,
+  numberOfMonths
 }: RangeDatePickerProps) {
 
   return (
@@ -35,7 +39,8 @@ export function RangeDatePicker({
             variant={"outline"}
             className={cn(
               "w-[250px] justify-start text-left font-normal flex items-center",
-              !date && "text-muted-foreground"
+              !date && "text-muted-foreground",
+              triggerClassName
             )}
           >
             <CalendarIcon className="w-4 h-4 mr-2" />
@@ -60,7 +65,7 @@ export function RangeDatePicker({
             defaultMonth={date?.from}
             selected={date}
             onSelect={onDateChange}
-            numberOfMonths={2}
+            numberOfMonths={numberOfMonths ? numberOfMonths : 2}
           />
         </PopoverContent>
       </Popover>

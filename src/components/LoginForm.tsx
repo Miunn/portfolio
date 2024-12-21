@@ -53,7 +53,7 @@ export default function LoginForm() {
     }
 
     return (
-        <Card className="w-[400px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <Card className="w-[350px] sm:w-[400px] absolute top-[25%] md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2">
             <CardHeader>
                 <CardTitle>Login</CardTitle>
                 <CardDescription>Login to your account</CardDescription>

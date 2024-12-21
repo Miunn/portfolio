@@ -12,10 +12,11 @@ export interface FilterResourcesProps {
     filters: ResourceCardTag[];
     selectedFilters: ResourceCardTag[];
     onSelectedFiltersChange: (value: ResourceCardTag) => void;
-    emptyLabel: string
+    emptyLabel: string;
+    triggerClassName: string;
 }
 
-export default function FilterResources({ filters, selectedFilters, onSelectedFiltersChange, emptyLabel }: FilterResourcesProps) {
+export default function FilterResources({ filters, selectedFilters, onSelectedFiltersChange, emptyLabel, triggerClassName }: FilterResourcesProps) {
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -26,7 +27,7 @@ export default function FilterResources({ filters, selectedFilters, onSelectedFi
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-fit justify-between"
+                    className={cn("w-fit justify-start", triggerClassName)}
                 >Filter
                     {selectedFilters.length > 0 ? <Separator orientation="vertical" className="mx-2" /> : null}
                     <div className="space-x-2 flex gap-1">

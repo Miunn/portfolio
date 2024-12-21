@@ -46,7 +46,6 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const [dateRangeFilter, setDateRangeFilter] = useState<DateRange | undefined>(undefined);
     const [displayedResources, setDisplayedResources] = useState<ResourceCardType[]>(resources);
 
-    const [active, setActive] = useState<(ResourceCardType) | boolean | null>(null);
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
@@ -64,21 +63,21 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
         const searchTokens = searchValue.split(" ");
 
         let output = resources;
-        
+
         for (const token of searchTokens) {
             output = output.filter((r) => {
                 if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
                     return r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token);
                 }
-    
+
                 if (dateRange.from !== undefined && dateRange.to === undefined) {
                     return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
                 }
-    
+
                 if (dateRange.from === undefined && dateRange.to !== undefined) {
                     return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
                 }
-    
+
                 return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(token.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], token));
             });
         }
@@ -96,35 +95,17 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
         setDisplayedResources(getMatchingResource(searchInput, date));
     }
 
-    useEffect(() => {
-        function onKeyDown(event: KeyboardEvent) {
-            if (event.key === "Escape") {
-                setActive(false);
-            }
-        }
-
-        if (active && typeof active === "object") {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "auto";
-        }
-
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-    }, [active]);
-
-    useOutsideClick(ref, () => setActive(null));
-
     return (
         <>
-            <div className="mb-20 mx-auto max-w-2xl space-y-4">
+            <div className="mb-10 sm:mb-20 sm:mx-auto w-full px-6 sm:px-0 md:max-w-2xl sm:max-w-xl space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
                     onSubmit={() => { }}
                 />
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                     <FilterResources
+                        triggerClassName="w-full sm:w-auto"
                         filters={tags ? tags : []}
                         selectedFilters={searchFilters}
                         onSelectedFiltersChange={(value) => {
@@ -137,17 +118,18 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                         emptyLabel={"No tags"}
                     />
                     <RangeDatePicker
+                        triggerClassName={"w-full sm:w-auto"}
                         date={dateRangeFilter}
                         onDateChange={handleDateChange}
                     />
-                    <Button variant={"ghost"} className="px-2" onClick={() => {
+                    <Button variant={"ghost"} className="px-2 w-fit" onClick={() => {
                         setSearchFilters([]);
                         setDateRangeFilter(undefined);
                     }}><X className="mr-px" /> Reset</Button>
                 </div>
             </div>
 
-            <div className="w-full grid sm:grid-cols-4 grid-cols-3">
+            <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1">
                 {displayedResources.length > 0
                     ? displayedResources.map((card, index) => (
                         <Dialog key={index}>
@@ -190,7 +172,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     <DialogDescription>{card.createdAt.toDateString()}</DialogDescription>
                                 </DialogHeader>
                                 {card.tags && card.tags.length > 0
-                                    ? <div className="flex gap-3">
+                                    ? <div className="flex gap-3 flex-wrap">
                                         {card.tags?.map((tag, index) => (
                                             <Badge key={`${tag.value}-${index}`} className="w-fit">{tag.label}</Badge>
                                         ))} </div>
@@ -199,6 +181,9 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
+                                    <Link href={card.url} target="_blank" onClick={() => { }}>
+                                        <Button className="rounded-3xl w-full" type={"button"}>See more</Button>
+                                    </Link>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
@@ -211,14 +196,11 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                                 </AlertDialogDescription>
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => deleteResource(card.id)}>Delete</AlertDialogAction>
+                                                    <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground">Delete</AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogHeader>
                                         </AlertDialogContent>
                                     </AlertDialog>
-                                    <Link href={card.url} target="_blank" onClick={() => { }}>
-                                        <Button className="rounded-3xl" type={"button"}>See more</Button>
-                                    </Link>
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
