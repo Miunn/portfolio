@@ -117,7 +117,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
 
     return (
         <>
-            <div className="mb-20 mx-auto md:max-w-2xl sm:max-w-xl max-w-sm space-y-4">
+            <div className="mb-10 sm:mb-20 sm:mx-auto mx-11 md:max-w-2xl sm:max-w-xl max-w-sm space-y-4">
                 <PlaceholdersAndVanishInput
                     placeholders={searchPlaceholders}
                     onChange={(changeEvent) => handleSearchChange(changeEvent.currentTarget.value)}
@@ -149,7 +149,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                 </div>
             </div>
 
-            <div className="w-full grid sm:grid-cols-4 grid-cols-3">
+            <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1">
                 {displayedResources.length > 0
                     ? displayedResources.map((card, index) => (
                         <Dialog key={index}>
