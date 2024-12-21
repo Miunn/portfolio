@@ -22,7 +22,7 @@ export default async function Resources() {
             <GridPattern
                 className={cn(
                     "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]",
-                    "inset-x-[20%] inset-y-[-15%] skew-y-12",
+                    "inset-x-[20%] top-[-42%] md:inset-y-[-30%] skew-y-12",
                 )}
             />
             <div className="relative w-full lg:max-w-6xl md:max-w-2xl max-w-xl mx-auto overflow-hidden mb-52">
