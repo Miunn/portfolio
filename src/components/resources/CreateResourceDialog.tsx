@@ -10,10 +10,10 @@ import { z } from "zod";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ScrollArea } from "../ui/scroll-area";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react"
 import { Item, MultiSelect } from "../ui/multi-autocomplete";
-import { createResource, getTags } from "@/actions/resources";
+import { createResource } from "@/actions/resources";
 import { toast } from "@/hooks/use-toast";
 import { ResourceCardTag } from "../ResourcesExpandableLayout";
 
