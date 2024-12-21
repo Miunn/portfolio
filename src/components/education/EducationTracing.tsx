@@ -1,4 +1,3 @@
-import {TracingBeam} from "@/components/ui/tracing-beam";
 import {TracingBeamFull} from "@/components/ui/tracing-beam-full";
 import Image from "next/image";
 import {CardDescription, CardTitle} from "@/components/ui/card";
