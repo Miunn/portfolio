@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactNode, useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
@@ -73,10 +73,6 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     }, [active]);
 
     useOutsideClick(ref, () => setActive(null));
-
-    function cuid() {
-        throw new Error("Function not implemented.");
-    }
 
     return (
         <>
