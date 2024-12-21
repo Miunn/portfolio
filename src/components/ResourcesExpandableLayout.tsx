@@ -50,27 +50,37 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
+    function tagMatchingSearch(tags: ResourceCardTag[], search: string) {
+        const lowerSearch = search.toLowerCase();
+        for (const tag of tags) {
+            if (tag.value.toLowerCase().includes(lowerSearch) || tag.label.toLowerCase().includes(lowerSearch)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): ResourceCardType[] {
         return resources.filter((r) => {
             if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
-                return r.title.toLowerCase().includes(searchValue.toLowerCase());
+                return r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue);
             }
 
             if (dateRange.from !== undefined && dateRange.to === undefined) {
-                return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt > dateRange.from;
+                return r.createdAt > dateRange.from && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
             }
 
             if (dateRange.from === undefined && dateRange.to !== undefined) {
-                return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt < dateRange.to;
+                return r.createdAt < dateRange.to && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
             }
 
-            return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt > dateRange.from! && r.createdAt < dateRange.to!;
+            return r.createdAt > dateRange.from! && r.createdAt < dateRange.to! && (r.title.toLowerCase().includes(searchValue.toLowerCase()) || tagMatchingSearch(r.tags ? r.tags : [], searchValue));
         });
     }
 
     function handleSearchChange(value: string) {
         setSearchInput(value);
-        setDisplayedResources(resources.filter((r) => r.title.toLowerCase().includes(value.toLowerCase())))
+        setDisplayedResources(getMatchingResource(value, dateRangeFilter));
     }
 
     function handleDateChange(date: DateRange | undefined) {
