@@ -50,9 +50,32 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const ref = useRef<HTMLDivElement>(null);
     const id = useId();
 
+    function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): ResourceCardType[] {
+        return resources.filter((r) => {
+            if (dateRange === undefined || (dateRange.from === undefined && dateRange.to === undefined)) {
+                return r.title.toLowerCase().includes(searchValue.toLowerCase());
+            }
+
+            if (dateRange.from !== undefined && dateRange.to === undefined) {
+                return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt > dateRange.from;
+            }
+
+            if (dateRange.from === undefined && dateRange.to !== undefined) {
+                return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt < dateRange.to;
+            }
+
+            return r.title.toLowerCase().includes(searchValue.toLowerCase()) && r.createdAt > dateRange.from! && r.createdAt < dateRange.to!;
+        });
+    }
+
     function handleSearchChange(value: string) {
         setSearchInput(value);
         setDisplayedResources(resources.filter((r) => r.title.toLowerCase().includes(value.toLowerCase())))
+    }
+
+    function handleDateChange(date: DateRange | undefined) {
+        setDateRangeFilter(date);
+        setDisplayedResources(getMatchingResource(searchInput, date));
     }
 
     useEffect(() => {
@@ -97,7 +120,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                     />
                     <RangeDatePicker
                         date={dateRangeFilter}
-                        onDateChange={setDateRangeFilter}
+                        onDateChange={handleDateChange}
                     />
                     <Button variant={"ghost"} className="px-2" onClick={() => {
                         setSearchFilters([]);
