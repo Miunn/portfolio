@@ -31,12 +31,18 @@ export default function SkillsList() {
                             <h3>Python</h3>
                         </li>
                         <li>
+                            <h3>Java</h3>
+                        </li>
+                        <li>
                             <h3>Typescript</h3>
+                        </li>
+                        <li>
+                            <h3>React</h3>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <h2 className="text-xl">Cyber-security</h2>
+                    <h2 className="text-xl">Cybersecurity</h2>
                     <ul className={"lg:grid lg:grid-cols-2"}>
                         <li>
                             <h3>Burp Suite</h3>

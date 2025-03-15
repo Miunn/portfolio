@@ -5,14 +5,14 @@ export default function EducationTracing() {
     return (
         <div className={"relative mx-auto h-full"}>
             <div className="absolute top-0 bottom-0">
-                <svg viewBox="0 0 20 564" width="20" className="block h-full" aria-hidden="true" strokeLinecap="round" stroke-linejoin="round">
-                    <path d="M 1 1 V 563" fill="none" stroke="url(#gradient)" stroke-width="1.25"></path>
+                <svg viewBox="0 0 20 564" width="20" className="block h-full" aria-hidden="true" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 1 1 V 563" fill="none" stroke="url(#gradient)" strokeWidth="1.25"></path>
                     <defs>
                         <linearGradient id="gradient" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="0" y2="564">
-                            <stop stop-color="#18CCFC" stop-opacity="0"></stop>
-                            <stop stop-color="#18CCFC"></stop>
-                            <stop offset="0.325" stop-color="#6344F5"></stop>
-                            <stop offset="1" stop-color="#AE48FF" stop-opacity="1"></stop>
+                            <stop stopColor="#18CCFC" stop-opacity="0"></stop>
+                            <stop stopColor="#18CCFC"></stop>
+                            <stop offset="0.325" stopColor="#6344F5"></stop>
+                            <stop offset="1" stopColor="#AE48FF" stop-opacity="1"></stop>
                         </linearGradient>
                     </defs>
                 </svg>

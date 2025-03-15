@@ -25,8 +25,8 @@ export default function Home() {
                     <p>
                         I'm a fifth year cyber-security student from France.<br />
                         I'm pursuing an engineering degree at INSA Hauts-de-France.<br />
-                        Passionate about IT and cyber-security, I like to test and harden the security of information
-                        systems.
+                        Passionate about IT and cybersecurity, I enjoy strengthening information system security<br />
+                        and developing projects with a security-by-design approach.
                     </p>
                 </section>
 
