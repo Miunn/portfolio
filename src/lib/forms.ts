@@ -21,10 +21,8 @@ export const CREATE_RESOURCE_FORM_SCHEMA = z.object({
     }).max(100, {
         message: "Title must be at most 100 characters long"
     }),
-    description: z.string().min(2, {
-        message: "Description must be at least 2 characters long"
-    }).max(100, {
-        message: "Description must be at most 100 characters long"
+    description: z.string().max(255, {
+        message: "Description must be at most 255 characters long"
     }),
     text: z.string().min(2, {
         message: "Content must be at least 2 characters long"

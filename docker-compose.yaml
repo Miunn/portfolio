@@ -1,0 +1,17 @@
+services:
+  db:
+    container_name: portfolio_db
+    image: postgres:17
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - portfolio-data:/var/lib/postgresql/data
+
+volumes:
+  portfolio-data:
+    external: true
+    name: portfolio-data

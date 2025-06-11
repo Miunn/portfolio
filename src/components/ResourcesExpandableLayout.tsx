@@ -18,13 +18,15 @@ import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { deleteResource } from "@/actions/resources";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Resource } from "@prisma/client";
 
 export type ResourceCardType = {
     id: string;
     title: string;
     text: string;
+    description: string;
     content: () => ReactNode;
-    url: string;
+    url?: string;
     tags?: ResourceCardTag[];
     createdAt: Date;
 }
@@ -34,7 +36,7 @@ export type ResourceCardTag = {
     label: string
 }
 
-export default function ResourcesExpandableLayout({ resources, tags }: { resources: ResourceCardType[], tags?: ResourceCardTag[] }) {
+export default function ResourcesExpandableLayout({ resources, tags }: { resources: (Resource & { tags: { value: string, label: string }[] })[], tags?: ResourceCardTag[] }) {
     const searchPlaceholders = [
         "CVE-20240781",
         "Microsoft",
@@ -44,10 +46,9 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
     const [searchInput, setSearchInput] = useState<string>("");
     const [searchFilters, setSearchFilters] = useState<ResourceCardTag[]>([]);
     const [dateRangeFilter, setDateRangeFilter] = useState<DateRange | undefined>(undefined);
-    const [displayedResources, setDisplayedResources] = useState<ResourceCardType[]>(resources);
+    const [displayedResources, setDisplayedResources] = useState<(Resource & { tags: { value: string, label: string }[] })[]>(resources);
 
     const ref = useRef<HTMLDivElement>(null);
-    const id = useId();
 
     function tagMatchingSearch(tags: ResourceCardTag[], search: string) {
         const lowerSearch = search.toLowerCase();
@@ -59,7 +60,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
         return false;
     }
 
-    function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): ResourceCardType[] {
+    function getMatchingResource(searchValue: string, dateRange: DateRange | undefined): (Resource & { tags: { value: string, label: string }[] })[] {
         const searchTokens = searchValue.split(" ");
 
         let output = resources;
@@ -142,7 +143,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                         </CardHeader>
 
                                         <CardContent className="flex-1 pb-4">
-                                            <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.text }} />
+                                            <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.description }} />
                                         </CardContent>
 
                                         {card.tags && card.tags!.length > 0 ? <CardFooter className="flex gap-2">
@@ -181,9 +182,9 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
-                                    <Link href={card.url} target="_blank" onClick={() => { }}>
+                                    {card.url ? <Link href={card.url} target="_blank" onClick={() => { }}>
                                         <Button className="rounded-3xl w-full" type={"button"}>See more</Button>
-                                    </Link>
+                                    </Link> : null}
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
