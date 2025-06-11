@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -9,8 +10,9 @@ datasource db {
 
 model Resource {
   id    String     @id @default(cuid())
-  title String? @db.VarChar(255)
-  text String? @db.Text
+  title String @db.VarChar(255)
+  description String @db.VarChar(255)
+  text String @db.Text
   url String? @db.VarChar(255)
   createdAt DateTime @default(now())
   tags Tag[]
@@ -18,8 +20,8 @@ model Resource {
 
 model Tag {
   id String @id @default(cuid())
-  value String? @db.VarChar(100) @unique
-  label String? @db.VarChar(100)
+  value String @db.VarChar(100) @unique
+  label String @db.VarChar(100)
   resources Resource[]
 }
 

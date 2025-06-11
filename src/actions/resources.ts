@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { isAuthenticated } from "./auth";
+import { Resource } from "@prisma/client";
 
 export async function createResource(title: string, description: string, text: string, url: string, tags: { value: string, label: string }[]) {
 
@@ -13,6 +14,7 @@ export async function createResource(title: string, description: string, text: s
     const resource = await prisma.resource.create({
         data: {
             title: title,
+            description: description,
             text: text,
             url: url,
             tags: {
@@ -43,7 +45,7 @@ export async function deleteResource(id: string) {
     return { status: "ok" }
 }
 
-export async function getResources() {
+export async function getResources(): Promise<(Resource & { tags: { value: string, label: string }[] })[]> {
 
     const resources = await prisma.resource.findMany({
         orderBy: [

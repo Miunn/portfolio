@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Button } from "../ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogOverlay, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { CREATE_RESOURCE_FORM_SCHEMA } from "@/lib/forms";
 import { z } from "zod";
@@ -58,99 +58,101 @@ export default function CreateResourceDialog({ tags }: { tags: ResourceCardTag[]
             <DialogTrigger asChild>
                 <Button className="z-10">Register a new resource</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent tabIndex={undefined} className="flex flex-col gap-2">
                 <DialogHeader>
                     <DialogTitle>New resource</DialogTitle>
                     <DialogDescription>Register a new resource</DialogDescription>
                 </DialogHeader>
                 <Form {...create_resource_schema}>
                     <form onSubmit={create_resource_schema.handleSubmit(onSubmit)} className="space-y-8">
-                        <ScrollArea className="h-72 w-full">
+                        <ScrollArea className="h-96 w-full">
                             <div className="pl-px pr-4">
-                                <FormField
-                                    control={create_resource_schema.control}
-                                    name="title"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Title</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Title of the new resource
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={create_resource_schema.control}
-                                    name="description"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Description</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Short description for the new resource
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={create_resource_schema.control}
-                                    name="url"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Url</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="https://example.com" {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Distant link to the resource
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={create_resource_schema.control}
-                                    name="text"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Content</FormLabel>
-                                            <FormControl>
-                                                <Textarea {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Content of the resource
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={create_resource_schema.control}
-                                    name="tags"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Tags</FormLabel>
-                                            <FormControl>
-                                                <MultiSelect
-                                                    items={tags.length > 0 ? tags as unknown as Item[] : []}
-                                                    selectedItems={selectedTags}
-                                                    setSelectedItems={setSelectedTags}
-                                                    {...field} />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Resource&apos;s tags
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                <div className="contents">
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="title"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Title</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Title of the new resource
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="description"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Description</FormLabel>
+                                                <FormControl>
+                                                    <Textarea rows={4} {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Short description for the new resource
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="url"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Url</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="https://example.com" {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Distant link to the resource
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="text"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Content</FormLabel>
+                                                <FormControl>
+                                                    <Textarea rows={10} {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Content of the resource
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={create_resource_schema.control}
+                                        name="tags"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Tags</FormLabel>
+                                                <FormControl>
+                                                    <MultiSelect
+                                                        items={tags.length > 0 ? tags as unknown as Item[] : []}
+                                                        selectedItems={selectedTags}
+                                                        setSelectedItems={setSelectedTags}
+                                                        {...field} />
+                                                </FormControl>
+                                                <FormDescription>
+                                                    Resource&apos;s tags
+                                                </FormDescription>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                             </div>
                         </ScrollArea>
                         <DialogFooter>
@@ -165,6 +167,6 @@ export default function CreateResourceDialog({ tags }: { tags: ResourceCardTag[]
                     </form>
                 </Form>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     )
 }
