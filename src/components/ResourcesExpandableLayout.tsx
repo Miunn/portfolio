@@ -143,7 +143,10 @@ export default function ResourcesExpandableLayout({ resources, tags, isAuth }: {
                                         </CardHeader>
 
                                         <CardContent className="flex-1 pb-4">
-                                            <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.description }} />
+                                            {card.description.length > 0
+                                                ? <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.description.replace(/\n/g, "<br />") }} />
+                                                : <p className="italic">No description</p>
+                                            }
                                         </CardContent>
 
                                         {card.tags && card.tags!.length > 0 ? <CardFooter className="flex gap-2">
@@ -179,7 +182,7 @@ export default function ResourcesExpandableLayout({ resources, tags, isAuth }: {
                                         ))} </div>
                                     : null}
                                 <ScrollArea className="h-[600px] w-full pr-3">
-                                    <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
+                                    <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text.replace(/\n/g, "<br />") }} />
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
                                     {card.url ? <Link href={card.url} target="_blank" onClick={() => { }}>
@@ -198,7 +201,7 @@ export default function ResourcesExpandableLayout({ resources, tags, isAuth }: {
                                                 </AlertDialogDescription>
                                                 <AlertDialogFooter>
                                                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground">Delete</AlertDialogAction>
+                                                    <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
                                                 </AlertDialogFooter>
                                             </AlertDialogHeader>
                                         </AlertDialogContent>

@@ -18,7 +18,12 @@ export async function createResource(title: string, description: string, text: s
             text: text,
             url: url,
             tags: {
-                create: tags
+                connectOrCreate: tags.map(tag => ({
+                    where: {
+                        value: tag.value
+                    },
+                    create: tag
+                }))
             }
         }
     });
