@@ -39,7 +39,7 @@ export default async function Resources() {
                     }
                 </div>
 
-                <ResourcesExpandableLayout resources={resources} tags={tags} />
+                <ResourcesExpandableLayout resources={resources} tags={tags} isAuth={isAuth} />
             </div>
         </>
     )

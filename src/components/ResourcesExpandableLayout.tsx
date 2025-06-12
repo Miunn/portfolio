@@ -36,7 +36,7 @@ export type ResourceCardTag = {
     label: string
 }
 
-export default function ResourcesExpandableLayout({ resources, tags }: { resources: (Resource & { tags: { value: string, label: string }[] })[], tags?: ResourceCardTag[] }) {
+export default function ResourcesExpandableLayout({ resources, tags, isAuth }: { resources: (Resource & { tags: { value: string, label: string }[] })[], tags?: ResourceCardTag[], isAuth: boolean }) {
     const searchPlaceholders = [
         "CVE-20240781",
         "Microsoft",
@@ -185,7 +185,8 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                     {card.url ? <Link href={card.url} target="_blank" onClick={() => { }}>
                                         <Button className="rounded-3xl w-full" type={"button"}>See more</Button>
                                     </Link> : null}
-                                    <AlertDialog>
+                                    {isAuth ?
+                                        <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
                                         </AlertDialogTrigger>
@@ -202,6 +203,7 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                             </AlertDialogHeader>
                                         </AlertDialogContent>
                                     </AlertDialog>
+                                    : null}
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
