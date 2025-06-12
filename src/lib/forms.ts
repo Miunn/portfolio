@@ -27,10 +27,8 @@ export const CREATE_RESOURCE_FORM_SCHEMA = z.object({
     text: z.string().min(2, {
         message: "Content must be at least 2 characters long"
     }),
-    url: z.string().min(2, {
-        message: "Url must be at least 2 characters long"
-    }).max(100, {
-        message: "Url must be at most 100 characters long"
+    url: z.string().max(250, {
+        message: "Url must be at most 250 characters long"
     }),
     tags: z.string().min(2, {
         message: "Tag must be at least 2 characters long"

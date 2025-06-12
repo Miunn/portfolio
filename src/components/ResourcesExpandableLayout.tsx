@@ -1,7 +1,6 @@
 "use client";
-import React, { ReactNode, useEffect, useId, useRef, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useOutsideClick } from "@/hooks/use-outside-click";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
@@ -19,6 +18,13 @@ import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDe
 import { deleteResource } from "@/actions/resources";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Resource } from "@prisma/client";
+import Markdown from 'react-markdown'
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
+import 'katex/dist/katex.min.css'
+import rehypeHighlight from 'rehype-highlight'
+import "highlight.js/styles/github-dark.css";
+import { cn } from "@/lib/utils";
 
 export type ResourceCardType = {
     id: string;
@@ -36,7 +42,7 @@ export type ResourceCardTag = {
     label: string
 }
 
-export default function ResourcesExpandableLayout({ resources, tags }: { resources: (Resource & { tags: { value: string, label: string }[] })[], tags?: ResourceCardTag[] }) {
+export default function ResourcesExpandableLayout({ resources, tags, isAuth }: { resources: (Resource & { tags: { value: string, label: string }[] })[], tags?: ResourceCardTag[], isAuth: boolean }) {
     const searchPlaceholders = [
         "CVE-20240781",
         "Microsoft",
@@ -143,7 +149,10 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                         </CardHeader>
 
                                         <CardContent className="flex-1 pb-4">
-                                            <div className="line-clamp-[7]" dangerouslySetInnerHTML={{ __html: card.description }} />
+                                            {card.description.length > 0
+                                                ? <Markdown className="line-clamp-[7]" remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex as any]}>{card.description}</Markdown>
+                                                : <p className="italic">No description</p>
+                                            }
                                         </CardContent>
 
                                         {card.tags && card.tags!.length > 0 ? <CardFooter className="flex gap-2">
@@ -179,29 +188,39 @@ export default function ResourcesExpandableLayout({ resources, tags }: { resourc
                                         ))} </div>
                                     : null}
                                 <ScrollArea className="h-[600px] w-full pr-3">
-                                    <div className="relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]" dangerouslySetInnerHTML={{ __html: card.text }} />
+                                    <Markdown
+                                        remarkPlugins={[remarkMath]}
+                                        rehypePlugins={[rehypeKatex as any, rehypeHighlight as any]}
+                                        className={cn("relative text-xs md:text-sm lg:text-base md:h-fit flex flex-col items-start gap-4 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]",
+                                            "prose-code:rounded-md prose-code:border prose-code:border-white"
+                                        )}
+                                    >
+                                        {card.text}
+                                    </Markdown>
                                 </ScrollArea>
                                 <DialogFooter className="flex justify-end gap-4">
                                     {card.url ? <Link href={card.url} target="_blank" onClick={() => { }}>
                                         <Button className="rounded-3xl w-full" type={"button"}>See more</Button>
                                     </Link> : null}
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent ref={ref} className="z-[100]">
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Are you sure</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    This will delete the resource permanently, this action cannot but undone.
-                                                </AlertDialogDescription>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground">Delete</AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogHeader>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
+                                    {isAuth ?
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button className="rounded-3xl" type={"button"} variant={"destructive"}>Delete</Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent ref={ref} className="z-[100]">
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This will delete the resource permanently, this action cannot but undone.
+                                                    </AlertDialogDescription>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => deleteResource(card.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogHeader>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                        : null}
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
