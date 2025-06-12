@@ -94,9 +94,36 @@ const config = {
         "orbit": "orbit calc(var(--duration)*1s) linear infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: 'inherit',
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+              fontWeight: '500',
+            },
+            code: {
+              color: 'inherit',
+              backgroundColor: 'hsl(var(--muted))',
+              padding: '0.25rem 0.5rem',
+              borderRadius: '0.25rem',
+            },
+            pre: {
+              backgroundColor: 'hsl(var(--muted))',
+              color: 'inherit',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+    addVariablesForColors
+  ],
 } satisfies Config
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
