@@ -29,10 +29,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className={"dark overflow-x-hidden"}>
+		<html lang="en">
 			<body
 				className={cn(
-					"relative w-screen min-h-dvh font-inter antialiased overflow-hidden",
+					"dark relative w-screen min-h-dvh font-inter antialiased overflow-x-hidden",
 					inter.className,
 				)}
 			>
@@ -42,7 +42,7 @@ export default function RootLayout({
 							<li>
 								<Button
 									variant={"link"}
-									className="group !no-underline"
+									className="group no-underline!"
 								>
 									<Link
 										href={"/resume.pdf"}

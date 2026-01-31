@@ -5,7 +5,7 @@ export const config = {
   matcher: '/login',
 }
  
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   
   const token = request.cookies.get('jwt_session');
 
